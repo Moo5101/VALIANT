@@ -11,15 +11,18 @@ Its job is to turn a bottle seen by the camera into a usable care artifact:
 - frequency or usage instructions when available
 - reminder times
 - an image-backed audit trail
+- SMS and email notifications at scheduled times
 
 ## End-To-End Flow
 
 The medication path is implemented primarily in:
 
-- [backend/processing/detector.py](/Users/vishruth/Desktop/Build/backend/processing/detector.py:1)
-- [backend/processing/medicine_ocr.py](/Users/vishruth/Desktop/Build/backend/processing/medicine_ocr.py:1)
-- [backend/processing/pipeline.py](/Users/vishruth/Desktop/Build/backend/processing/pipeline.py:1)
-- [backend/services/supabase_service.py](/Users/vishruth/Desktop/Build/backend/services/supabase_service.py:1)
+- [backend/processing/detector.py](/backend/processing/detector.py)
+- [backend/processing/medicine_ocr.py](/backend/processing/medicine_ocr.py)
+- [backend/processing/pipeline.py](/backend/processing/pipeline.py)
+- [backend/services/supabase_service.py](/backend/services/supabase_service.py)
+- [backend/services/scheduler.py](/backend/services/scheduler.py)
+- [backend/services/email_service.py](/backend/services/email_service.py)
 
 The flow is:
 
@@ -31,12 +34,13 @@ The flow is:
 6. plausibility checks reject obviously bad parses
 7. duplicate medication names are canonicalized
 8. the medicine is stored in Supabase
-9. reminder times are derived
+9. reminder times are derived from the frequency text
 10. APScheduler jobs are registered
+11. when a reminder fires, the patient receives an SMS and email; the caregiver receives an SMS and email
 
 ## Detection Layer
 
-The current detector maps COCO bottle detections to the project’s `medicine` category.
+The current detector maps COCO bottle detections to the project's `medicine` category.
 
 This is intentionally practical:
 
@@ -71,14 +75,13 @@ The medication pipeline does not blindly trust the model output.
 
 It currently applies multiple safeguards:
 
-- blur rejection through a focus score
+- blur rejection through a focus score (Laplacian variance)
 - name normalization to remove noise characters
 - plausibility filters on length and token count
-- blocked words to reject non-medicine label text
-- medicine-marker checks such as `mg`, `tablet`, `capsule`, `dose`, and `rx`
-- duplicate matching across canonicalized medicine names
-
-This is a real validation layer, even though it is still heuristic rather than clinically authoritative.
+- blocked words to reject non-medicine label text (e.g., "pharmacy", "patient", "instructions", "directions", "refill", "prescriber", "doctor", "label", "needed")
+- medicine-marker checks such as `mg`, `mcg`, `ml`, `tablet`, `capsule`, `dose`, and `rx`
+- duplicate matching across canonicalized medicine names with fuzzy substring matching
+- dosage-unit and form-word stripping for canonicalization so "Nateglinide" and "Nateglinide Tablets USP" resolve to the same medicine
 
 ## Medicine Database Strategy
 
@@ -93,7 +96,7 @@ Today, the application already maintains a structured medicine database inside S
 - variants like `Nateglinide` and `Nateglinide Tablets USP` are reconciled
 - reminders are attached to the same logical medicine record
 
-In that sense, the product already checks new detections against a medicine database: the project’s own normalized medicine store.
+In that sense, the product already checks new detections against a medicine database: the project's own normalized medicine store.
 
 ### Layer 2: External Medication Registry
 
@@ -125,15 +128,47 @@ The current reminder engine derives schedule times from frequency text using heu
 
 Examples:
 
-- `twice daily` becomes morning and evening reminders
-- `every 12 hours` becomes two evenly spaced reminders
-- `morning` becomes one morning reminder
+- `twice daily` becomes morning and evening reminders (09:00, 21:00)
+- `three times daily` becomes three reminders (08:00, 14:00, 20:00)
+- `every 12 hours` becomes two evenly spaced reminders (08:00, 20:00)
+- `every 8 hours` becomes three reminders (06:00, 14:00, 22:00)
+- `morning` becomes one morning reminder (09:00)
+- `evening` or `bedtime` becomes one evening reminder (20:00)
+- explicit times like `08:30` are used directly
+- when no frequency is parseable, the system defaults to a single morning reminder (09:00)
 
 This is intentionally MVP-friendly:
 
 - it works without requiring the user to manually enter times
 - it makes the demo path powerful immediately
 - it is easy to replace later with richer medication scheduling logic
+
+## Reminder Delivery
+
+When a scheduled reminder fires, the scheduler dispatches notifications through all configured channels.
+
+### SMS Delivery (Twilio)
+
+- **Patient**: "Time to take {medicine_name} {dosage}"
+- **Caregiver**: "Reminder: {patient_name} should take {medicine_name} {dosage}"
+
+### Email Delivery (SendGrid)
+
+- **Patient**: subject "Medicine reminder: {medicine_name}", body identical to the SMS text, with styled HTML formatting
+- **Caregiver**: subject "Reminder for {patient_name}: {medicine_name}", body identical to the SMS text, with styled HTML formatting
+
+Each channel has an independent cooldown key:
+
+| Key | Channel |
+|---|---|
+| `reminder:patient:{reminder_id}` | patient SMS |
+| `reminder:caregiver:{reminder_id}` | caregiver SMS |
+| `reminder-email:patient:{reminder_id}` | patient email |
+| `reminder-email:caregiver:{reminder_id}` | caregiver email |
+
+This means a duplicate SMS suppression does not prevent the email from going through, and vice versa.
+
+After all notifications are dispatched, the scheduler calls `supabase.mark_reminder_sent` to record the delivery timestamp.
 
 ## Image Evidence
 
@@ -155,6 +190,7 @@ The medication path has already been validated end to end in the current project
 - the crop image uploaded successfully
 - the API returned the saved medicine
 - the reminder was registered in the scheduler
+- the notification channels (SMS and email) are wired and tested
 
 That is an important milestone because it shows the loop is not theoretical.
 
