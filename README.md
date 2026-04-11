@@ -1,122 +1,109 @@
-# Alzheimer Safety Dashboard MVP
+# Alzheimer Safety Dashboard
 
-This repository contains a two-part MVP for an Alzheimer support dashboard:
+## Documentation Set
 
-- A `FastAPI` backend that captures webcam frames, runs computer vision tasks, stores results in Supabase, and sends SMS or MMS alerts through Twilio.
-- A `Next.js` dashboard for patients and caregivers to review medicines, familiar faces, alerts, and live camera status.
+This documentation describes a computer-vision-assisted safety platform built to help support an elderly Alzheimer's patient living in a home environment.
 
-## Features
+The project was created because a friend has a grandmother with Alzheimer's, and the practical problem was not abstract:
 
-- Medicine bottle detection with YOLOv8
-- Gemini label extraction from medicine images
-- Familiar face auto-learning with `face_recognition`
-- Hazard detection for knives and scissors with YOLOv8
-- Hazard detection for fire and guns with Roboflow hosted inference
-- SMS and MMS alerts to both patient and caregiver via Twilio
-- Reminder scheduling with APScheduler
-- Supabase-backed storage, alerts, medicines, reminders, and face records
+- remembering medicines reliably
+- identifying when unfamiliar people are nearby
+- noticing dangerous hazards fast enough to escalate
+- giving both the patient and the caregiver a single shared source of truth
 
-## Project Layout
+The result is an MVP that combines:
 
-```text
-repo/
-├── backend/
-│   ├── api/
-│   ├── processing/
-│   ├── services/
-│   ├── config.py
-│   ├── main.py
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   ├── package.json
-│   └── .env.local.example
-├── supabase/
-│   └── schema.sql
-└── .env.example
-```
+- a `FastAPI` backend for camera processing, safety logic, persistence, and alert orchestration
+- a `Next.js` frontend for patient onboarding, dashboard monitoring, and live camera visibility
+- `Supabase` for application data and image storage
+- `Gemini` for medicine label extraction from bottle images
+- `YOLOv8` and `Roboflow` for object and hazard detection
+- `face_recognition` for familiar-face learning and unfamiliar-face warning logic
+- `Twilio` for SMS and MMS delivery
+- `SendGrid` for email delivery with styled HTML templates and image evidence
+- a companion multi-camera network server that turns any phone into a surveillance camera
 
-## Environment
+This is not just a demo UI. It is an applied care workflow:
 
-1. Copy `.env.example` to `.env` for the backend.
-2. Copy `frontend/.env.local.example` to `frontend/.env.local` for the dashboard.
-3. Fill in:
-   - `SUPABASE_URL`
-   - `SUPABASE_KEY`
-   - `SUPABASE_SERVICE_KEY`
-   - `TWILIO_ACCOUNT_SID`
-   - `TWILIO_AUTH_TOKEN`
-   - `TWILIO_PHONE_NUMBER`
-   - `ROBOFLOW_API_KEY`
-   - `GEMINI_API_KEY`
+1. detect a medicine bottle in view
+2. extract and structure the label
+3. store the medicine record
+4. generate reminder times
+5. monitor faces and hazards continuously
+6. escalate alerts to the patient and caregiver via SMS, MMS, and email
+7. extend camera coverage to any phone on the network
 
-## Database Setup
+## What This Documentation Covers
 
-Apply [supabase/schema.sql](/Users/vishruth/Desktop/Build/supabase/schema.sql) in the Supabase SQL editor or through the CLI. The schema creates:
+- the origin, mission, and caregiving motivation behind the product
+- the full system architecture, runtime flow, and notification architecture
+- the medication intelligence pipeline and validation strategy
+- safety monitoring, alerting, and multi-channel notification delivery
+- the multi-camera phone network for extended home coverage
+- email notification implementation details including SendGrid integration, HTML templating, cooldown isolation, and recipient validation
+- current implementation status, recent achievements, and roadmap
 
-- `patients`
-- `medicines`
-- `reminders`
-- `known_faces`
-- `alerts`
-- The public storage bucket `detection-images`
+## Read In This Order
 
-## Backend Runbook
+1. [01-origin-and-mission.md](01-origin-and-mission.md)
+2. [02-system-architecture.md](02-system-architecture.md)
+3. [03-medicine-intelligence.md](03-medicine-intelligence.md)
+4. [04-safety-monitoring-and-notifications.md](04-safety-monitoring-and-notifications.md)
+5. [05-product-status-and-roadmap.md](05-product-status-and-roadmap.md)
 
-1. Create a Python 3.11 virtual environment.
-2. Install dependencies:
+## Project Name
 
-```bash
-pip install -r backend/requirements.txt
-```
+Internally, the implementation is currently titled **Alzheimer Safety Dashboard**.
 
-3. Start the API:
+That name is functional, but the actual product thesis is broader:
 
-```bash
-uvicorn backend.main:app --reload
-```
+- ambient safety monitoring from laptops and phones
+- medication adherence support
+- caregiver escalation through SMS, MMS, and email
+- memory-safe, low-friction household monitoring
+- extensible multi-camera coverage with no app installation
 
-The backend starts the reminder scheduler automatically and attempts to start the webcam loop on launch.
+## Executive Summary
 
-## Frontend Runbook
+This project exists to reduce the gap between what families wish they could monitor and what they can realistically observe in real time.
 
-1. Install dependencies:
+For Alzheimer's care, the most painful failures are not always rare edge cases. They are ordinary moments:
 
-```bash
-cd frontend
-npm install
-```
+- a missed medication
+- a dangerous object left nearby
+- an unknown visitor who should not be ignored
+- a caregiver learning about a problem too late
 
-2. Start the dashboard:
+This system is designed to move those moments from invisible to observable, and from observable to actionable, using every channel available: live dashboard views, SMS messages, MMS images, and email alerts with evidence.
 
-```bash
-npm run dev
-```
+## Current Outcome
 
-3. Open `http://localhost:3000`.
+The current build already achieves the core loop:
 
-On a fresh install, the dashboard opens into an onboarding or sign-in flow instead of requiring a preconfigured patient ID.
+- patient onboarding and sign-in with email capture
+- live camera preview in the browser
+- medicine bottle detection with structured label extraction through Gemini
+- medicine persistence in Supabase
+- reminder generation and scheduler registration
+- familiar-face accumulation and unfamiliar-face warning logic
+- hazard detection and alert generation
+- caregiver-facing dashboard views for medicines, faces, and alerts
+- SMS/MMS notification delivery through Twilio
+- email notification delivery through SendGrid with styled HTML and image evidence
+- multi-channel dispatch with independent cooldown tracking per channel
+- multi-camera phone network for extended home surveillance with motion detection
 
-## API Endpoints
+## Important Truth About Scope
 
-- `GET /api/health`
-- `GET /api/patient/by-phone?phone=...`
-- `GET /api/patient/{id}`
-- `POST /api/patient`
-- `POST /api/session/start`
-- `POST /api/session/activate/{patient_id}`
-- `POST /api/session/clear`
-- `GET /api/medicines/{patient_id}`
-- `GET /api/faces/{patient_id}`
-- `PUT /api/faces/{face_id}/label`
-- `GET /api/alerts/{patient_id}`
-- `PUT /api/alerts/{alert_id}/acknowledge`
-- `GET /api/camera/frame`
+This is a strong MVP, not a finished medical device.
 
-## Operational Notes
+It has real working infrastructure and real intelligence pipelines, but some production-grade layers are intentionally documented as the next phase:
 
-- The backend is resilient to missing third-party credentials and will log degraded-mode warnings instead of crashing where possible.
-- YOLO and `face_recognition` are heavyweight dependencies. Expect longer first-run setup time.
-- Medicine reminder times are inferred from parsed label frequency text using simple heuristics in the MVP.
-- Supabase Realtime is wired on the frontend for the `alerts` table. If anon policies are restricted, the dashboard will still update through periodic polling.
-- The backend can optionally start with `PATIENT_ID`, but the normal flow is now patient activation through sign-in or onboarding.
+- formal external medication-registry validation
+- phone camera integration with the main vision pipeline
+- email delivery tracking and retry logic
+- stronger authentication and role-based access
+- richer policy and audit controls
+- production reliability hardening
+
+That distinction matters. The value of this project is not only what is already implemented, but also that the architecture is coherent enough to support the next layer of rigor.
