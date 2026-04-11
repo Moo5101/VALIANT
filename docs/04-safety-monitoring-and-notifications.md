@@ -140,7 +140,7 @@ To enable email delivery:
 3. set the following environment variables in `.env`:
 
 ```
-SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxx
+SENDGRID_API_KEY=<your-sendgrid-api-key>
 SENDGRID_FROM_EMAIL=vishruth.nm@gmail.com
 SENDGRID_FROM_NAME=VALIANT
 SENDGRID_REPLY_TO=

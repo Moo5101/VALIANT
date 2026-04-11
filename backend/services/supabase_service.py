@@ -186,7 +186,7 @@ class SupabaseService:
             return []
         response = (
             self.client.table("reminders")
-            .select("*, medicines(name, dosage), patients(name, phone, caregiver_phone)")
+            .select("*, medicines(name, dosage), patients(name, phone, patient_email, caregiver_phone, caregiver_email)")
             .eq("is_active", True)
             .execute()
         )
@@ -197,7 +197,7 @@ class SupabaseService:
             return None
         response = (
             self.client.table("reminders")
-            .select("*, medicines(name, dosage), patients(name, phone, caregiver_phone)")
+            .select("*, medicines(name, dosage), patients(name, phone, patient_email, caregiver_phone, caregiver_email)")
             .eq("id", str(reminder_id))
             .limit(1)
             .execute()

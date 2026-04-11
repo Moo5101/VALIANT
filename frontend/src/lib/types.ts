@@ -4,8 +4,10 @@ export interface Patient {
   id: string;
   name: string;
   phone: string;
+  patient_email?: string | null;
   caregiver_name?: string | null;
   caregiver_phone: string;
+  caregiver_email?: string | null;
   created_at?: string;
 }
 

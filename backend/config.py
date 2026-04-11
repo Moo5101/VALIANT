@@ -51,6 +51,23 @@ class Settings(BaseSettings):
         default=None,
         validation_alias=AliasChoices("TWILIO_PHONE_NUMBER", "TWILIO_FROM_NUMBER"),
     )
+    sendgrid_api_key: str | None = Field(default=None, validation_alias=AliasChoices("SENDGRID_API_KEY", "SENDGRID_API"))
+    sendgrid_api_url: str = Field(
+        default="https://api.sendgrid.com/v3/mail/send",
+        validation_alias=AliasChoices("SENDGRID_API_URL"),
+    )
+    sendgrid_from_email: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("SENDGRID_FROM_EMAIL"),
+    )
+    sendgrid_from_name: str | None = Field(
+        default="VALIANT",
+        validation_alias=AliasChoices("SENDGRID_FROM_NAME"),
+    )
+    sendgrid_reply_to: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("SENDGRID_REPLY_TO"),
+    )
 
     roboflow_api_key: str | None = Field(default=None, validation_alias=AliasChoices("ROBOFLOW_API_KEY"))
     roboflow_api_url: str = Field(

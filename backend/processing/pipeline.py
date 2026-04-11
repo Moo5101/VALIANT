@@ -15,6 +15,7 @@ from backend.config import Settings
 from backend.processing.detector import Detection, Detector
 from backend.processing.face_manager import FaceManager, FaceResult
 from backend.processing.medicine_ocr import MedicineInfo, MedicineOCR
+from backend.services.email_service import SendGridEmailService
 from backend.services.scheduler import ReminderScheduler
 from backend.services.supabase_service import SupabaseService
 from backend.services.twilio_service import TwilioService
@@ -48,6 +49,7 @@ class ProcessingPipeline:
         face_manager: FaceManager,
         supabase: SupabaseService,
         twilio: TwilioService,
+        email_service: SendGridEmailService,
         scheduler: ReminderScheduler | None = None,
     ) -> None:
         self.settings = settings
@@ -56,6 +58,7 @@ class ProcessingPipeline:
         self.face_manager = face_manager
         self.supabase = supabase
         self.twilio = twilio
+        self.email_service = email_service
         self.scheduler = scheduler
         self.cooldowns: dict[str, float] = {}
         self.last_face_scan_at: dict[str, float] = {}
@@ -167,6 +170,9 @@ class ProcessingPipeline:
 
         image_url = self._upload_detection_crop("hazards", detection.cropped_image)
         patient_body, caregiver_body = self._hazard_messages(hazard_label, patient_name)
+        patient_email = str(patient.get("patient_email") or "") if patient else ""
+        caregiver_email = str(patient.get("caregiver_email") or "") if patient else ""
+        subject = f"Critical alert: {hazard_label.title()} detected"
         alert = self.supabase.create_alert(
             patient_id=patient_id,
             alert_type="hazard_sos",
@@ -174,8 +180,8 @@ class ProcessingPipeline:
             title=f"{hazard_label.title()} detected",
             message=caregiver_body,
             image_url=image_url,
-            sent_to_patient=bool(patient and patient.get("phone")),
-            sent_to_caregiver=bool(patient and patient.get("caregiver_phone")),
+            sent_to_patient=bool(patient and (patient.get("phone") or patient.get("patient_email"))),
+            sent_to_caregiver=bool(patient and (patient.get("caregiver_phone") or patient.get("caregiver_email"))),
         )
 
         if patient:
@@ -199,6 +205,20 @@ class ProcessingPipeline:
                     caregiver_body,
                     cooldown_key=f"{cooldown_key}:caregiver",
                 )
+            self.email_service.send_email(
+                patient_email,
+                subject,
+                patient_body,
+                image_url=image_url,
+                cooldown_key=f"{cooldown_key}:patient-email",
+            )
+            self.email_service.send_email(
+                caregiver_email,
+                subject,
+                caregiver_body,
+                image_url=image_url,
+                cooldown_key=f"{cooldown_key}:caregiver-email",
+            )
 
         return alert
 
@@ -217,6 +237,9 @@ class ProcessingPipeline:
 
         patient_body = "Unknown person detected nearby"
         caregiver_body = f"Unknown person detected near {patient_name}"
+        patient_email = str(patient.get("patient_email") or "") if patient else ""
+        caregiver_email = str(patient.get("caregiver_email") or "") if patient else ""
+        subject = "Warning: Unknown person detected nearby"
         alert = self.supabase.create_alert(
             patient_id=patient_id,
             alert_type="unfamiliar_face",
@@ -224,8 +247,8 @@ class ProcessingPipeline:
             title="Unknown person detected nearby",
             message=caregiver_body,
             image_url=face.image_url,
-            sent_to_patient=bool(patient and patient.get("phone")),
-            sent_to_caregiver=bool(patient and patient.get("caregiver_phone")),
+            sent_to_patient=bool(patient and (patient.get("phone") or patient.get("patient_email"))),
+            sent_to_caregiver=bool(patient and (patient.get("caregiver_phone") or patient.get("caregiver_email"))),
         )
 
         if patient:
@@ -238,6 +261,20 @@ class ProcessingPipeline:
                 str(patient.get("caregiver_phone") or ""),
                 caregiver_body,
                 cooldown_key=f"{cooldown_key}:caregiver",
+            )
+            self.email_service.send_email(
+                patient_email,
+                subject,
+                patient_body,
+                image_url=face.image_url,
+                cooldown_key=f"{cooldown_key}:patient-email",
+            )
+            self.email_service.send_email(
+                caregiver_email,
+                subject,
+                caregiver_body,
+                image_url=face.image_url,
+                cooldown_key=f"{cooldown_key}:caregiver-email",
             )
         return alert
 

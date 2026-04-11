@@ -4,10 +4,15 @@ create table if not exists patients (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   phone text not null,
+  patient_email text,
   caregiver_name text,
   caregiver_phone text not null,
+  caregiver_email text,
   created_at timestamptz default now()
 );
+
+alter table patients add column if not exists patient_email text;
+alter table patients add column if not exists caregiver_email text;
 
 create unique index if not exists idx_patients_phone_unique on patients(phone);
 

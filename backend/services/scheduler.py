@@ -6,6 +6,7 @@ from typing import Any
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+from backend.services.email_service import SendGridEmailService
 from backend.services.supabase_service import SupabaseService
 from backend.services.twilio_service import TwilioService
 
@@ -33,9 +34,10 @@ DAY_MAP = {
 
 
 class ReminderScheduler:
-    def __init__(self, supabase: SupabaseService, twilio: TwilioService) -> None:
+    def __init__(self, supabase: SupabaseService, twilio: TwilioService, email_service: SendGridEmailService) -> None:
         self.supabase = supabase
         self.twilio = twilio
+        self.email_service = email_service
         self.scheduler = AsyncIOScheduler()
 
     async def start(self) -> None:
@@ -85,9 +87,13 @@ class ReminderScheduler:
         patient_name = patient.get("name", "The patient")
         medicine_name = medicine.get("name", "medicine")
         dosage = medicine.get("dosage") or ""
+        patient_email = str(patient.get("patient_email") or "")
+        caregiver_email = str(patient.get("caregiver_email") or "")
 
         patient_body = f"Time to take {medicine_name} {dosage}".strip()
         caregiver_body = f"Reminder: {patient_name} should take {medicine_name} {dosage}".strip()
+        patient_subject = f"Medicine reminder: {medicine_name}"
+        caregiver_subject = f"Reminder for {patient_name}: {medicine_name}"
 
         self.twilio.send_sms(
             patient.get("phone", ""),
@@ -98,6 +104,18 @@ class ReminderScheduler:
             patient.get("caregiver_phone", ""),
             caregiver_body,
             cooldown_key=f"reminder:caregiver:{reminder_id}",
+        )
+        self.email_service.send_email(
+            patient_email,
+            patient_subject,
+            patient_body,
+            cooldown_key=f"reminder-email:patient:{reminder_id}",
+        )
+        self.email_service.send_email(
+            caregiver_email,
+            caregiver_subject,
+            caregiver_body,
+            cooldown_key=f"reminder-email:caregiver:{reminder_id}",
         )
         self.supabase.mark_reminder_sent(reminder_id)
 

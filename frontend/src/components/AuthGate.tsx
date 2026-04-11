@@ -5,8 +5,10 @@ import { useState } from "react";
 interface OnboardingPayload {
   name: string;
   phone: string;
+  patient_email: string;
   caregiver_name: string;
   caregiver_phone: string;
+  caregiver_email: string;
 }
 
 interface AuthGateProps {
@@ -22,8 +24,10 @@ export default function AuthGate({ busy, error, onSignIn, onOnboard }: AuthGateP
   const [form, setForm] = useState<OnboardingPayload>({
     name: "",
     phone: "",
+    patient_email: "",
     caregiver_name: "",
     caregiver_phone: "",
+    caregiver_email: "",
   });
 
   return (
@@ -35,16 +39,17 @@ export default function AuthGate({ busy, error, onSignIn, onOnboard }: AuthGateP
         </h1>
         <p className="mt-5 max-w-xl text-lg text-white/75">
           The patient phone number and caregiver phone number are stored during onboarding so Twilio
-          can send reminders, safety warnings, and SOS alerts to both people.
+          can send reminders, safety warnings, and SOS alerts. Patient and caregiver emails can also
+          be stored for SendGrid-powered email delivery.
         </p>
         <div className="mt-8 grid gap-4 rounded-[1.75rem] border border-white/15 bg-white/5 p-5 text-sm text-white/80">
           <div>
             <p className="text-xs uppercase tracking-[0.25em] text-white/50">Patient alerts</p>
-            <p className="mt-2">Medicine reminders and immediate warnings go to the patient phone.</p>
+            <p className="mt-2">Medicine reminders and immediate warnings go to the patient phone and email when available.</p>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.25em] text-white/50">Caregiver alerts</p>
-            <p className="mt-2">The caregiver phone receives the same alert stream with escalation context.</p>
+            <p className="mt-2">The caregiver phone and email receive the same alert stream with escalation context.</p>
           </div>
         </div>
       </div>
@@ -160,6 +165,22 @@ export default function AuthGate({ busy, error, onSignIn, onOnboard }: AuthGateP
             </div>
 
             <div>
+              <label className="block text-sm font-semibold text-slate-700" htmlFor="patient-email">
+                Patient email
+              </label>
+              <input
+                id="patient-email"
+                type="email"
+                value={form.patient_email}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, patient_email: event.target.value }))
+                }
+                placeholder="patient@example.com"
+                className="mt-3 w-full rounded-[1.25rem] border border-slate-200 bg-white px-4 py-4 text-base text-slate-900 outline-none transition focus:border-slate-500"
+              />
+            </div>
+
+            <div>
               <label className="block text-sm font-semibold text-slate-700" htmlFor="caregiver-phone">
                 Caregiver phone number
               </label>
@@ -171,6 +192,22 @@ export default function AuthGate({ busy, error, onSignIn, onOnboard }: AuthGateP
                   setForm((current) => ({ ...current, caregiver_phone: event.target.value }))
                 }
                 placeholder="+1 555 555 0124"
+                className="mt-3 w-full rounded-[1.25rem] border border-slate-200 bg-white px-4 py-4 text-base text-slate-900 outline-none transition focus:border-slate-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700" htmlFor="caregiver-email">
+                Caregiver email
+              </label>
+              <input
+                id="caregiver-email"
+                type="email"
+                value={form.caregiver_email}
+                onChange={(event) =>
+                  setForm((current) => ({ ...current, caregiver_email: event.target.value }))
+                }
+                placeholder="caregiver@example.com"
                 className="mt-3 w-full rounded-[1.25rem] border border-slate-200 bg-white px-4 py-4 text-base text-slate-900 outline-none transition focus:border-slate-500"
               />
             </div>

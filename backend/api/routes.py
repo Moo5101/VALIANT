@@ -8,6 +8,7 @@ from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+from backend.utils.email import normalize_email
 from backend.utils.phone import normalize_phone
 
 
@@ -18,8 +19,10 @@ class PatientPayload(BaseModel):
     id: UUID | None = None
     name: str
     phone: str
+    patient_email: str | None = None
     caregiver_name: str | None = None
     caregiver_phone: str
+    caregiver_email: str | None = None
 
 
 class FaceLabelPayload(BaseModel):
@@ -176,10 +179,20 @@ async def create_or_update_patient(
     normalized_payload["caregiver_name"] = str(normalized_payload.get("caregiver_name") or "").strip() or None
     normalized_payload["phone"] = normalize_phone(str(normalized_payload["phone"]))
     normalized_payload["caregiver_phone"] = normalize_phone(str(normalized_payload["caregiver_phone"]))
+    normalized_payload["patient_email"] = normalize_email(str(normalized_payload.get("patient_email") or ""))
+    normalized_payload["caregiver_email"] = normalize_email(str(normalized_payload.get("caregiver_email") or ""))
     if not normalized_payload["name"]:
         raise HTTPException(status_code=422, detail="Patient name is required")
     if not normalized_payload["phone"] or not normalized_payload["caregiver_phone"]:
         raise HTTPException(status_code=422, detail="Valid patient and caregiver phone numbers are required")
+    if str(normalized_payload.get("patient_email") or "") == "" and "patient_email" in normalized_payload:
+        normalized_payload["patient_email"] = None
+    if str(normalized_payload.get("caregiver_email") or "") == "" and "caregiver_email" in normalized_payload:
+        normalized_payload["caregiver_email"] = None
+    if payload.patient_email and not normalized_payload["patient_email"]:
+        raise HTTPException(status_code=422, detail="A valid patient email is required")
+    if payload.caregiver_email and not normalized_payload["caregiver_email"]:
+        raise HTTPException(status_code=422, detail="A valid caregiver email is required")
     patient = get_supabase(request).upsert_patient(normalized_payload)
     if not patient:
         raise HTTPException(status_code=500, detail="Patient could not be stored")

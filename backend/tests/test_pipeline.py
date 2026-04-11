@@ -42,6 +42,11 @@ class _StubTwilio:
         return None
 
 
+class _StubEmailService:
+    def send_email(self, *args: object, **kwargs: object) -> None:
+        return None
+
+
 class _StubScheduler:
     def __init__(self) -> None:
         self.added: list[dict[str, object]] = []
@@ -60,7 +65,9 @@ class _StubSupabase:
             "id": patient_id,
             "name": "Test Patient",
             "phone": "+15555550101",
+            "patient_email": "patient@example.com",
             "caregiver_phone": "+15555550102",
+            "caregiver_email": "caregiver@example.com",
         }
 
     def find_medicine_by_name(self, patient_id: str, name: str) -> dict[str, object] | None:
@@ -147,6 +154,7 @@ class PipelineTests(unittest.TestCase):
             face_manager=_StubFaceManager(),
             supabase=supabase,
             twilio=_StubTwilio(),
+            email_service=_StubEmailService(),
             scheduler=scheduler,
         )
 
@@ -184,6 +192,7 @@ class PipelineTests(unittest.TestCase):
             face_manager=_StubFaceManager(),
             supabase=supabase,
             twilio=_StubTwilio(),
+            email_service=_StubEmailService(),
             scheduler=_StubScheduler(),
         )
 
@@ -227,6 +236,7 @@ class PipelineTests(unittest.TestCase):
             face_manager=_StubFaceManager(),
             supabase=supabase,
             twilio=_StubTwilio(),
+            email_service=_StubEmailService(),
             scheduler=scheduler,
         )
 

@@ -4,6 +4,7 @@ import { startTransition, useEffect, useState } from "react";
 
 import AuthGate from "@/components/AuthGate";
 import Dashboard from "@/components/Dashboard";
+import { normalizeEmail } from "@/lib/email";
 import { normalizePhone } from "@/lib/phone";
 import type { Patient } from "@/lib/types";
 
@@ -105,17 +106,29 @@ export default function AppShell({ apiBaseUrl, bootstrapPatientId = "" }: AppShe
   async function handleOnboard(payload: {
     name: string;
     phone: string;
+    patient_email: string;
     caregiver_name: string;
     caregiver_phone: string;
+    caregiver_email: string;
   }) {
     const normalizedPatientPhone = normalizePhone(payload.phone);
     const normalizedCaregiverPhone = normalizePhone(payload.caregiver_phone);
+    const normalizedPatientEmail = normalizeEmail(payload.patient_email);
+    const normalizedCaregiverEmail = normalizeEmail(payload.caregiver_email);
     if (!payload.name.trim()) {
       setError("Enter the patient name to create the profile.");
       return;
     }
     if (!normalizedPatientPhone || !normalizedCaregiverPhone) {
       setError("Enter valid patient and caregiver phone numbers.");
+      return;
+    }
+    if (payload.patient_email.trim() && !normalizedPatientEmail) {
+      setError("Enter a valid patient email address.");
+      return;
+    }
+    if (payload.caregiver_email.trim() && !normalizedCaregiverEmail) {
+      setError("Enter a valid caregiver email address.");
       return;
     }
     setBusy(true);
@@ -129,8 +142,10 @@ export default function AppShell({ apiBaseUrl, bootstrapPatientId = "" }: AppShe
         body: JSON.stringify({
           name: payload.name.trim(),
           phone: normalizedPatientPhone,
+          patient_email: normalizedPatientEmail || null,
           caregiver_name: payload.caregiver_name.trim(),
           caregiver_phone: normalizedCaregiverPhone,
+          caregiver_email: normalizedCaregiverEmail || null,
         }),
       });
       window.localStorage.setItem(STORAGE_KEY, patientRecord.id);

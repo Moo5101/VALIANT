@@ -212,6 +212,9 @@ export default function Dashboard({
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Patient Phone</p>
               <p className="mt-2 font-medium">{patient?.phone ?? "Not set"}</p>
+              <span className="block text-sm font-normal text-slate-500">
+                {patient?.patient_email ?? "Patient email not set"}
+              </span>
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Caregiver</p>
@@ -219,6 +222,9 @@ export default function Dashboard({
                 {patient?.caregiver_name ?? "Caregiver"}
                 <span className="block text-sm font-normal text-slate-500">
                   {patient?.caregiver_phone ?? "Not set"}
+                </span>
+                <span className="block text-sm font-normal text-slate-500">
+                  {patient?.caregiver_email ?? "Caregiver email not set"}
                 </span>
               </p>
             </div>

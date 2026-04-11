@@ -12,6 +12,7 @@ from backend.processing.camera import CameraProcessor
 from backend.processing.detector import Detector
 from backend.processing.face_manager import FaceManager
 from backend.processing.medicine_ocr import MedicineOCR
+from backend.services.email_service import SendGridEmailService
 from backend.processing.pipeline import ProcessingPipeline
 from backend.services.scheduler import ReminderScheduler
 from backend.services.supabase_service import SupabaseService
@@ -28,10 +29,11 @@ def create_app() -> FastAPI:
     settings = get_settings()
     supabase = SupabaseService(settings)
     twilio = TwilioService(settings)
+    email_service = SendGridEmailService(settings)
     detector = Detector(settings)
     medicine_ocr = MedicineOCR(settings)
     face_manager = FaceManager(settings, supabase)
-    scheduler = ReminderScheduler(supabase, twilio)
+    scheduler = ReminderScheduler(supabase, twilio, email_service)
     pipeline = ProcessingPipeline(
         settings=settings,
         detector=detector,
@@ -39,6 +41,7 @@ def create_app() -> FastAPI:
         face_manager=face_manager,
         supabase=supabase,
         twilio=twilio,
+        email_service=email_service,
         scheduler=scheduler,
     )
     camera = CameraProcessor(settings, pipeline)
@@ -69,6 +72,7 @@ def create_app() -> FastAPI:
     app.state.settings = settings
     app.state.supabase = supabase
     app.state.twilio = twilio
+    app.state.email_service = email_service
     app.state.detector = detector
     app.state.medicine_ocr = medicine_ocr
     app.state.face_manager = face_manager
