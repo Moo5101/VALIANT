@@ -8,8 +8,7 @@ This repository contains a two-part MVP for an Alzheimer support dashboard:
 ## Features
 
 - Medicine bottle detection with YOLOv8
-- OCR label extraction with EasyOCR
-- Structured medicine parsing with Gemini
+- Gemini label extraction from medicine images
 - Familiar face auto-learning with `face_recognition`
 - Hazard detection for knives and scissors with YOLOv8
 - Hazard detection for fire and guns with Roboflow hosted inference
@@ -117,7 +116,7 @@ On a fresh install, the dashboard opens into an onboarding or sign-in flow inste
 ## Operational Notes
 
 - The backend is resilient to missing third-party credentials and will log degraded-mode warnings instead of crashing where possible.
-- YOLO, EasyOCR, and `face_recognition` are heavyweight dependencies. Expect longer first-run setup time.
+- YOLO and `face_recognition` are heavyweight dependencies. Expect longer first-run setup time.
 - Medicine reminder times are inferred from parsed label frequency text using simple heuristics in the MVP.
 - Supabase Realtime is wired on the frontend for the `alerts` table. If anon policies are restricted, the dashboard will still update through periodic polling.
 - The backend can optionally start with `PATIENT_ID`, but the normal flow is now patient activation through sign-in or onboarding.

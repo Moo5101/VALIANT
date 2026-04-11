@@ -94,6 +94,10 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("MAX_MEDICINE_DETECTIONS_PER_FRAME"),
     )
     medicine_crop_padding: float = Field(default=0.18, validation_alias=AliasChoices("MEDICINE_CROP_PADDING"))
+    medicine_focus_threshold: float = Field(
+        default=6.0,
+        validation_alias=AliasChoices("MEDICINE_FOCUS_THRESHOLD"),
+    )
     medicine_confidence_threshold: float = Field(
         default=0.18,
         validation_alias=AliasChoices("MEDICINE_CONFIDENCE_THRESHOLD"),

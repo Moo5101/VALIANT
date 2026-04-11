@@ -107,6 +107,8 @@ class ProcessingPipeline:
         scan_key = self._medicine_scan_key(patient_id, detection.cropped_image)
         if scan_key and self._in_cooldown(scan_key, max(self.settings.medicine_scan_interval, 0.25)):
             return None
+        if not self._is_medicine_crop_usable(detection.cropped_image):
+            return None
 
         medicine_info = self.medicine_ocr.read_medicine_label(detection.cropped_image)
         if not medicine_info or not medicine_info.name:
@@ -114,10 +116,11 @@ class ProcessingPipeline:
         medicine_info.name = self._normalize_medicine_name(medicine_info.name)
         if not self._is_plausible_medicine_info(medicine_info):
             return None
-        cooldown_key = f"medicine:{patient_id}:{medicine_info.name.lower()}"
+        existing_medicine = self._find_existing_medicine(patient_id, medicine_info.name)
+        if existing_medicine and existing_medicine.get("name"):
+            medicine_info.name = self._normalize_medicine_name(str(existing_medicine.get("name") or medicine_info.name))
+        cooldown_key = f"medicine:{patient_id}:{self._medicine_name_key(medicine_info.name)}"
         if self._in_cooldown(cooldown_key, self.settings.medicine_cooldown_seconds):
-            return None
-        if self.supabase.find_medicine_by_name(patient_id, medicine_info.name):
             return None
 
         image_url = self._upload_detection_crop("medicines", detection.cropped_image)
@@ -131,7 +134,8 @@ class ProcessingPipeline:
         if not medicine_record:
             return None
 
-        reminder_times = self._derive_reminder_times(medicine_info.frequency)
+        reminder_frequency = medicine_info.frequency or str(medicine_record.get("frequency") or "")
+        reminder_times = self._derive_reminder_times(reminder_frequency)
         self.supabase.delete_existing_reminders_for_medicine(medicine_record["id"])
         reminders: list[dict[str, object]] = []
         for reminder_time in reminder_times:
@@ -325,6 +329,60 @@ class ProcessingPipeline:
         normalized = re.sub(r"[^A-Za-z0-9/+(). -]+", " ", name)
         normalized = re.sub(r"\s+", " ", normalized).strip(" -")
         return normalized
+
+    @classmethod
+    def _medicine_name_key(cls, name: str) -> str:
+        normalized = cls._normalize_medicine_name(name).lower()
+        normalized = re.sub(r"\b\d+(?:\.\d+)?\s?(?:mg|mcg|g|ml|units?)\b", " ", normalized)
+        normalized = re.sub(r"\b(?:tablet|tablets|tab|tabs|capsule|capsules|caplet|caplets|usp|rx|only)\b", " ", normalized)
+        normalized = re.sub(r"\s+", " ", normalized).strip()
+        return normalized
+
+    @classmethod
+    def _looks_like_same_medicine(cls, left: str, right: str) -> bool:
+        left_key = cls._medicine_name_key(left)
+        right_key = cls._medicine_name_key(right)
+        if not left_key or not right_key:
+            return False
+        if left_key == right_key:
+            return True
+        return left_key in right_key or right_key in left_key
+
+    def _find_existing_medicine(self, patient_id: str, name: str) -> dict[str, object] | None:
+        existing = self.supabase.find_medicine_by_name(patient_id, name)
+        if existing:
+            return existing
+        candidate_key = self._medicine_name_key(name)
+        if not candidate_key:
+            return None
+        for record in self.supabase.list_medicines_with_reminders(patient_id):
+            record_name = str(record.get("name") or "")
+            if self._looks_like_same_medicine(record_name, name):
+                return record
+        return None
+
+    def _is_medicine_crop_usable(self, image: np.ndarray | None) -> bool:
+        if image is None or not image.size:
+            return False
+        focus_score = self._focus_score(image)
+        if focus_score >= self.settings.medicine_focus_threshold:
+            return True
+        logger.info(
+            "Skipping medicine label extraction due to blurry crop (focus %.1f < %.1f)",
+            focus_score,
+            self.settings.medicine_focus_threshold,
+        )
+        return False
+
+    @staticmethod
+    def _focus_score(image: np.ndarray) -> float:
+        if image is None or not image.size:
+            return 0.0
+        if len(image.shape) == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = image
+        return float(cv2.Laplacian(gray, cv2.CV_64F).var())
 
     @classmethod
     def _is_plausible_medicine_info(cls, medicine_info: MedicineInfo) -> bool:

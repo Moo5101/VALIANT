@@ -132,6 +132,17 @@ class SupabaseService:
         if not self.client:
             return existing or payload
         if existing:
+            payload = {
+                "patient_id": str(patient_id),
+                "name": payload.get("name") or existing.get("name"),
+                "dosage": payload.get("dosage") or existing.get("dosage"),
+                "frequency": payload.get("frequency") or existing.get("frequency"),
+                "instructions": payload.get("instructions") or existing.get("instructions"),
+                "image_url": payload.get("image_url") or existing.get("image_url"),
+                "raw_ocr_text": payload.get("raw_ocr_text")
+                if len(str(payload.get("raw_ocr_text") or "")) >= len(str(existing.get("raw_ocr_text") or ""))
+                else existing.get("raw_ocr_text"),
+            }
             response = (
                 self.client.table("medicines")
                 .update(payload)

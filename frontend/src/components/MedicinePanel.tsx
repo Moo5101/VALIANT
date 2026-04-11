@@ -74,7 +74,7 @@ export default function MedicinePanel({ medicines }: MedicinePanelProps) {
       <div className="mb-6 flex items-end justify-between gap-4">
         <div>
           <h2 className="section-title">Medicine Schedule</h2>
-          <p className="section-copy">OCR-detected bottles and their next reminder windows.</p>
+          <p className="section-copy">Gemini-detected bottles and their next reminder windows.</p>
         </div>
         <div className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold tracking-[0.25em] text-white">
           {medicines.length} tracked
@@ -84,7 +84,7 @@ export default function MedicinePanel({ medicines }: MedicinePanelProps) {
       <div className="grid gap-4">
         {medicines.length === 0 ? (
           <div className="rounded-[1.5rem] border border-dashed border-slate-300 bg-white/70 p-6 text-slate-600">
-            No medicine bottles have been saved yet. Hold a bottle in view of the camera to trigger OCR and scheduling.
+            No medicine bottles have been saved yet. Hold a bottle in view of the camera to trigger label extraction and scheduling.
           </div>
         ) : null}
 

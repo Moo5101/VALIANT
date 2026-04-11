@@ -31,6 +31,27 @@ async function fetchJson<T>(url: string, fallback: T): Promise<T> {
   }
 }
 
+async function fetchPatient(
+  url: string,
+  fallback: Patient | null,
+): Promise<{ patient: Patient | null; missing: boolean }> {
+  try {
+    const response = await fetch(url, { cache: "no-store" });
+    if (response.status === 404) {
+      return { patient: null, missing: true };
+    }
+    if (!response.ok) {
+      return { patient: fallback, missing: false };
+    }
+    return { patient: (await response.json()) as Patient, missing: false };
+  } catch {
+    return { patient: fallback, missing: false };
+  }
+}
+
+const VISIBLE_REFRESH_MS = 3000;
+const HIDDEN_REFRESH_MS = 15000;
+
 export default function Dashboard({
   patientId,
   apiBaseUrl,
@@ -48,6 +69,7 @@ export default function Dashboard({
   const medicinesRef = useRef<Medicine[]>(initialMedicines);
   const facesRef = useRef<KnownFace[]>(initialFaces);
   const alertsRef = useRef<AlertRecord[]>(initialAlerts);
+  const onSignOutRef = useRef(onSignOut);
 
   useEffect(() => {
     patientRef.current = patient;
@@ -57,11 +79,28 @@ export default function Dashboard({
   }, [patient, medicines, faces, alerts]);
 
   useEffect(() => {
+    onSignOutRef.current = onSignOut;
+  }, [onSignOut]);
+
+  useEffect(() => {
     let isCancelled = false;
+    let timeoutId: number | null = null;
+
+    function scheduleRefresh(delay: number) {
+      if (isCancelled) {
+        return;
+      }
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+      timeoutId = window.setTimeout(() => {
+        void refreshDashboard();
+      }, delay);
+    }
 
     async function refreshDashboard() {
-      const [nextPatient, nextMedicines, nextFaces, nextAlerts] = await Promise.all([
-        fetchJson<Patient | null>(`${apiBaseUrl}/api/patient/${patientId}`, patientRef.current),
+      const [patientState, nextMedicines, nextFaces, nextAlerts] = await Promise.all([
+        fetchPatient(`${apiBaseUrl}/api/patient/${patientId}`, patientRef.current),
         fetchJson<Medicine[]>(`${apiBaseUrl}/api/medicines/${patientId}`, medicinesRef.current),
         fetchJson<KnownFace[]>(`${apiBaseUrl}/api/faces/${patientId}`, facesRef.current),
         fetchJson<AlertRecord[]>(`${apiBaseUrl}/api/alerts/${patientId}`, alertsRef.current),
@@ -71,24 +110,42 @@ export default function Dashboard({
         return;
       }
 
+      if (patientState.missing) {
+        isCancelled = true;
+        void onSignOutRef.current();
+        return;
+      }
+
       startTransition(() => {
-        setPatient(nextPatient);
+        setPatient(patientState.patient);
         setMedicines(nextMedicines);
         setFaces(nextFaces);
         setAlerts(nextAlerts);
       });
+
+      scheduleRefresh(document.visibilityState === "visible" ? VISIBLE_REFRESH_MS : HIDDEN_REFRESH_MS);
+    }
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        void refreshDashboard();
+        return;
+      }
+      scheduleRefresh(HIDDEN_REFRESH_MS);
     }
 
     void refreshDashboard();
-
-    const intervalId = window.setInterval(refreshDashboard, 30000);
     const unsubscribe = subscribeToAlerts(patientId, () => {
       void refreshDashboard();
     });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       isCancelled = true;
-      window.clearInterval(intervalId);
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       unsubscribe();
     };
   }, [patientId, apiBaseUrl]);

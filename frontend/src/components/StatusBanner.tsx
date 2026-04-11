@@ -54,7 +54,7 @@ export default function StatusBanner({ patient, alerts, apiBaseUrl }: StatusBann
 
   return (
     <section className={`panel-shell overflow-hidden rounded-4xl ${status.tone}`}>
-      <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <div className="grid gap-6 p-6 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
         <div>
           <div className="inline-flex rounded-full border border-white/25 px-3 py-1 text-xs font-semibold tracking-[0.25em]">
             {status.badge}
@@ -72,12 +72,12 @@ export default function StatusBanner({ patient, alerts, apiBaseUrl }: StatusBann
             <img
               src={previewUrl}
               alt="Live camera preview"
-              className="h-56 w-full object-cover"
+              className="h-72 w-full object-cover sm:h-80 lg:h-[24rem] xl:h-[26rem]"
               onLoad={() => setCameraAvailable(true)}
               onError={() => setCameraAvailable(false)}
             />
           ) : (
-            <div className="flex h-56 items-center justify-center bg-black/20 px-6 text-center text-sm uppercase tracking-[0.25em] text-white/80">
+            <div className="flex h-72 items-center justify-center bg-black/20 px-6 text-center text-sm uppercase tracking-[0.25em] text-white/80 sm:h-80 lg:h-[24rem] xl:h-[26rem]">
               Camera preview unavailable
             </div>
           )}
