@@ -59,3 +59,17 @@ export interface AlertRecord {
   acknowledged?: boolean;
   created_at?: string;
 }
+
+export interface CameraSource {
+  id: string;
+  name: string;
+  kind: "local" | "remote-phone";
+  status: "online" | "offline" | "connecting";
+  last_seen?: number | null;
+  has_frame: boolean;
+  width?: number | null;
+  height?: number | null;
+  stream_url: string;
+  connect_url?: string;
+  disconnect_url?: string;
+}

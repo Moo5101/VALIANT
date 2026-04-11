@@ -67,17 +67,17 @@ export default function StatusBanner({ patient, alerts, apiBaseUrl }: StatusBann
             Live coverage for {patient?.name ?? "the patient"}
           </p>
         </div>
-        <div className="overflow-hidden rounded-[1.5rem] border border-white/20 bg-black/10">
+        <div className="overflow-hidden rounded-[1.75rem] border border-white/20 bg-black/10 shadow-[0_24px_64px_rgba(15,23,42,0.18)]">
           {cameraAvailable ? (
             <img
               src={previewUrl}
-              alt="Live camera preview"
-              className="h-72 w-full object-cover sm:h-80 lg:h-[24rem] xl:h-[26rem]"
+              alt="Composite live camera preview"
+              className="h-[22rem] w-full object-cover sm:h-[26rem] lg:h-[30rem] xl:h-[33rem]"
               onLoad={() => setCameraAvailable(true)}
               onError={() => setCameraAvailable(false)}
             />
           ) : (
-            <div className="flex h-72 items-center justify-center bg-black/20 px-6 text-center text-sm uppercase tracking-[0.25em] text-white/80 sm:h-80 lg:h-[24rem] xl:h-[26rem]">
+            <div className="flex h-[22rem] items-center justify-center bg-black/20 px-6 text-center text-sm uppercase tracking-[0.25em] text-white/80 sm:h-[26rem] lg:h-[30rem] xl:h-[33rem]">
               Camera preview unavailable
             </div>
           )}

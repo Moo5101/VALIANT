@@ -4,6 +4,7 @@ import { startTransition, useEffect, useRef, useState } from "react";
 
 import AlertsFeed from "@/components/AlertsFeed";
 import FacesPanel from "@/components/FacesPanel";
+import CameraSourcesPanel from "@/components/CameraSourcesPanel";
 import MedicinePanel from "@/components/MedicinePanel";
 import StatusBanner from "@/components/StatusBanner";
 import { subscribeToAlerts } from "@/lib/supabase";
@@ -240,6 +241,8 @@ export default function Dashboard({
       </header>
 
       <StatusBanner patient={patient} alerts={alerts} apiBaseUrl={apiBaseUrl} />
+
+      <CameraSourcesPanel apiBaseUrl={apiBaseUrl} />
 
       <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <MedicinePanel medicines={medicines} />

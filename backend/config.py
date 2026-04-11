@@ -29,6 +29,10 @@ class Settings(BaseSettings):
     app_name: str = Field(default="Alzheimer Safety Dashboard", validation_alias=AliasChoices("APP_NAME"))
     app_env: str = Field(default="development", validation_alias=AliasChoices("APP_ENV"))
     frontend_origin: str = Field(default="http://localhost:3000", validation_alias=AliasChoices("FRONTEND_ORIGIN"))
+    public_api_base_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices("PUBLIC_API_BASE_URL", "EXTERNAL_API_BASE_URL", "TAILSCALE_API_BASE_URL"),
+    )
     allowed_origins: CommaSeparated = Field(
         default_factory=lambda: list(DEFAULT_ALLOWED_ORIGINS),
         validation_alias=AliasChoices("ALLOWED_ORIGINS"),
@@ -97,6 +101,13 @@ class Settings(BaseSettings):
     camera_fps: int = Field(default=30, validation_alias=AliasChoices("CAMERA_FPS"))
     camera_buffer_size: int = Field(default=1, validation_alias=AliasChoices("CAMERA_BUFFER_SIZE"))
     camera_preview_fps: float = Field(default=10.0, validation_alias=AliasChoices("CAMERA_PREVIEW_FPS"))
+    remote_camera_timeout_seconds: float = Field(
+        default=8.0,
+        validation_alias=AliasChoices("REMOTE_CAMERA_TIMEOUT_SECONDS"),
+    )
+    camera_grid_max_columns: int = Field(default=2, validation_alias=AliasChoices("CAMERA_GRID_MAX_COLUMNS"))
+    camera_tile_width: int = Field(default=640, validation_alias=AliasChoices("CAMERA_TILE_WIDTH"))
+    camera_tile_height: int = Field(default=360, validation_alias=AliasChoices("CAMERA_TILE_HEIGHT"))
     frame_interval: float = Field(default=2.0, validation_alias=AliasChoices("FRAME_INTERVAL"))
     familiar_threshold: int = Field(default=5, validation_alias=AliasChoices("FAMILIAR_THRESHOLD"))
     face_match_threshold: float = Field(default=0.6, validation_alias=AliasChoices("FACE_MATCH_THRESHOLD"))
