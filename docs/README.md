@@ -1,0 +1,99 @@
+# Alzheimer Safety Dashboard
+
+## Documentation Set
+
+This documentation describes a computer-vision-assisted safety platform built to help support an elderly Alzheimer’s patient living in a home environment.
+
+The project was created because a friend has a grandmother with Alzheimer’s, and the practical problem was not abstract:
+
+- remembering medicines reliably
+- identifying when unfamiliar people are nearby
+- noticing dangerous hazards fast enough to escalate
+- giving both the patient and the caregiver a single shared source of truth
+
+The result is an MVP that combines:
+
+- a `FastAPI` backend for camera processing, safety logic, persistence, and alert orchestration
+- a `Next.js` frontend for patient onboarding, dashboard monitoring, and live camera visibility
+- `Supabase` for application data and image storage
+- `Gemini` for medicine label extraction from bottle images
+- `YOLOv8` and `Roboflow` for object and hazard detection
+- `face_recognition` for familiar-face learning and unfamiliar-face warning logic
+- `Twilio` for SMS and MMS delivery
+
+This is not just a demo UI. It is an applied care workflow:
+
+1. detect a medicine bottle in view
+2. extract and structure the label
+3. store the medicine record
+4. generate reminder times
+5. monitor faces and hazards continuously
+6. escalate alerts to the patient and caregiver
+
+## What This Documentation Covers
+
+- the origin, mission, and caregiving motivation behind the product
+- the full system architecture and runtime flow
+- the medication intelligence pipeline and validation strategy
+- safety monitoring, alerting, and notification channels
+- current implementation status, recent achievements, and roadmap
+
+## Read In This Order
+
+1. [01-origin-and-mission.md](</Users/vishruth/docs/01-origin-and-mission.md>)
+2. [02-system-architecture.md](</Users/vishruth/docs/02-system-architecture.md>)
+3. [03-medicine-intelligence.md](</Users/vishruth/docs/03-medicine-intelligence.md>)
+4. [04-safety-monitoring-and-notifications.md](</Users/vishruth/docs/04-safety-monitoring-and-notifications.md>)
+5. [05-product-status-and-roadmap.md](</Users/vishruth/docs/05-product-status-and-roadmap.md>)
+
+## Project Name
+
+Internally, the implementation is currently titled **Alzheimer Safety Dashboard**.
+
+That name is functional, but the actual product thesis is broader:
+
+- ambient safety monitoring
+- medication adherence support
+- caregiver escalation
+- memory-safe, low-friction household monitoring
+
+## Executive Summary
+
+This project exists to reduce the gap between what families wish they could monitor and what they can realistically observe in real time.
+
+For Alzheimer’s care, the most painful failures are not always rare edge cases. They are ordinary moments:
+
+- a missed medication
+- a dangerous object left nearby
+- an unknown visitor who should not be ignored
+- a caregiver learning about a problem too late
+
+This system is designed to move those moments from invisible to observable, and from observable to actionable.
+
+## Current Outcome
+
+The current build already achieves the core loop:
+
+- patient onboarding and sign-in
+- live camera preview in the browser
+- medicine bottle detection with structured label extraction through Gemini
+- medicine persistence in Supabase
+- reminder generation and scheduler registration
+- familiar-face accumulation and unfamiliar-face warning logic
+- hazard detection and alert generation
+- caregiver-facing dashboard views for medicines, faces, and alerts
+- SMS/MMS-oriented notification plumbing
+
+## Important Truth About Scope
+
+This is a strong MVP, not a finished medical device.
+
+It has real working infrastructure and real intelligence pipelines, but some production-grade layers are intentionally documented as the next phase:
+
+- formal external medication-registry validation
+- email notification delivery
+- stronger authentication and role-based access
+- richer policy and audit controls
+- production reliability hardening
+
+That distinction matters. The value of this project is not only what is already implemented, but also that the architecture is coherent enough to support the next layer of rigor.
