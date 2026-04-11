@@ -1,0 +1,26 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e88]:
+      - generic [ref=e89]:
+        - paragraph [ref=e90]: Welcome
+        - heading "Start the patient dashboard with a phone number." [level=1] [ref=e91]
+        - paragraph [ref=e92]: The patient phone number and caregiver phone number are stored during onboarding so Twilio can send reminders, safety warnings, and SOS alerts to both people.
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - paragraph [ref=e95]: Patient alerts
+            - paragraph [ref=e96]: Medicine reminders and immediate warnings go to the patient phone.
+          - generic [ref=e97]:
+            - paragraph [ref=e98]: Caregiver alerts
+            - paragraph [ref=e99]: The caregiver phone receives the same alert stream with escalation context.
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - button "Sign In" [ref=e102] [cursor=pointer]
+          - button "Onboarding" [ref=e103] [cursor=pointer]
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - generic [ref=e106]: Patient phone number
+            - paragraph [ref=e107]: Use the same number saved during onboarding.
+            - textbox "Patient phone number" [ref=e108]:
+              - /placeholder: +1 555 555 0123
+          - button "Open dashboard" [ref=e109] [cursor=pointer]
+  - alert [ref=e25]

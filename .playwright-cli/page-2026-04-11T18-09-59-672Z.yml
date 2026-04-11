@@ -1,0 +1,345 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e26]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: Patient Safety Console
+          - heading "Vishruth" [level=1] [ref=e31]
+          - paragraph [ref=e32]: Medicine reminders, familiar faces, and hazard alerts are tracked here for the patient and caregiver.
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - paragraph [ref=e35]: Patient Phone
+            - paragraph [ref=e36]: "+19452172143"
+          - generic [ref=e37]:
+            - paragraph [ref=e38]: Caregiver
+            - paragraph [ref=e39]:
+              - text: Landon
+              - generic [ref=e40]: "+18322979491"
+        - button "Sign out" [ref=e41] [cursor=pointer]
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]: SOS
+          - heading "Danger - SOS Sent" [level=2] [ref=e46]
+          - paragraph [ref=e47]: "SOS: Sharp object near Vishruth. 911 should be called."
+          - paragraph [ref=e48]: Live coverage for Vishruth
+        - img "Live camera preview" [ref=e50]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - heading "Medicine Schedule" [level=2] [ref=e55]
+              - paragraph [ref=e56]: OCR-detected bottles and their next reminder windows.
+            - generic [ref=e57]: 26 tracked
+          - generic [ref=e58]:
+            - article [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e61]:
+                  - paragraph [ref=e62]: Medication
+                  - 'heading "PhaRmacy 424421 En GuEST FAge #Hpel a# IHREL A5 NEEDED ewieuk 1 LLe 16- 3: Relain Ed-te 02is" [level=3] [ref=e63]'
+                  - paragraph [ref=e64]: Dosage pending
+                  - paragraph [ref=e65]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e66]:
+                  - paragraph [ref=e67]: Next dose
+                  - paragraph [ref=e68]: Apr 12, 2026, 9:00 AM
+            - article [ref=e69]:
+              - generic [ref=e70]:
+                - generic [ref=e71]:
+                  - paragraph [ref=e72]: Medication
+                  - 'heading "PhaR macy 424424 ROn QuEST TAKe ONE BY HoU\" TAR ET fines A Da'' As NEEDED Leeonzwne #ol {0Y6 13 Fc aa 4e Reman tr0 Jter 0z/6" [level=3] [ref=e73]'
+                  - paragraph [ref=e74]: Dosage pending
+                  - paragraph [ref=e75]: "TAKe ONE BY HoU\" TAR ET fines A Da' As NEEDED Leeonzwne #ol {0Y6 13 Fc aa 4e Reman tr0 Jter 0z/6"
+                - generic [ref=e76]:
+                  - paragraph [ref=e77]: Next dose
+                  - paragraph [ref=e78]: Apr 12, 2026, 9:00 AM
+            - article [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e81]:
+                  - paragraph [ref=e82]: Medication
+                  - 'heading "PhaR macy 424421 K QueST Jake BY ##Nbel'' No TABEE A 0a A5 NEEDED [omiek I\" 4671\" 3 Renaln Lzo Cter e" [level=3] [ref=e83]'
+                  - paragraph [ref=e84]: Dosage pending
+                  - paragraph [ref=e85]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e86]:
+                  - paragraph [ref=e87]: Next dose
+                  - paragraph [ref=e88]: Apr 12, 2026, 9:00 AM
+            - article [ref=e89]:
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - paragraph [ref=e92]: Medication
+                  - heading "PhaR macy 424421 Ro QuesT @E'N BY Mi Trres EEedebe8 A D= Huunzihe HCL 4OY6 091lie Renin 1247 e a" [level=3] [ref=e93]
+                  - paragraph [ref=e94]: Dosage pending
+                  - paragraph [ref=e95]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e96]:
+                  - paragraph [ref=e97]: Next dose
+                  - paragraph [ref=e98]: Apr 12, 2026, 9:00 AM
+            - article [ref=e99]:
+              - generic [ref=e100]:
+                - generic [ref=e101]:
+                  - paragraph [ref=e102]: Medication
+                  - 'heading "PhaR macy 424421 Ko QUEST TaKe ONE 8Y N: TArEE TSMES\" A\" 041 As NEEDED HuFUNZIHE.HO_ 40Y6 Relalia Aud Jcar u 0215" [level=3] [ref=e103]'
+                  - paragraph [ref=e104]: Dosage pending
+                  - paragraph [ref=e105]: "TaKe ONE 8Y N: TArEE TSMES\" A\" 041 As NEEDED HuFUNZIHE"
+                - generic [ref=e106]:
+                  - paragraph [ref=e107]: Next dose
+                  - paragraph [ref=e108]: Apr 12, 2026, 9:00 AM
+            - article [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - paragraph [ref=e112]: Medication
+                  - heading "(PhaR macy 424421 R QEST IAKE SNnet\" MI TAREE A Da\" As NEEDED aorurzihe HOL 4OY6 LLC 47ia Jfha RCAin 08470 Oter 0215" [level=3] [ref=e113]
+                  - paragraph [ref=e114]: Dosage pending
+                  - paragraph [ref=e115]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e116]:
+                  - paragraph [ref=e117]: Next dose
+                  - paragraph [ref=e118]: Apr 12, 2026, 9:00 AM
+            - article [ref=e119]:
+              - generic [ref=e120]:
+                - generic [ref=e121]:
+                  - paragraph [ref=e122]: Medication
+                  - heading "PhaR macy 424421 R CUeST WAKE BY Mi TARE ACble' A' DA\" [emie kCL I002 ic Relills Remain LietF0 ater 02/78" [level=3] [ref=e123]
+                  - paragraph [ref=e124]: Dosage pending
+                  - paragraph [ref=e125]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e126]:
+                  - paragraph [ref=e127]: Next dose
+                  - paragraph [ref=e128]: Apr 12, 2026, 9:00 AM
+            - article [ref=e129]:
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - paragraph [ref=e132]: Medication
+                  - heading "(Phar macy 424421 Rm GuEST TAKE ONE BY HoU TARE ETTSME? A da= As NEEDED nuwunzIhe_HcL 40Y8 Ralills Rm Weat Cto- Sae" [level=3] [ref=e133]
+                  - paragraph [ref=e134]: Dosage pending
+                  - paragraph [ref=e135]: TAKE ONE BY HoU TARE ETTSME? A da= As NEEDED nuwunzIhe_HcL 40Y8 Ralills Rm Weat Cto- Sae
+                - generic [ref=e136]:
+                  - paragraph [ref=e137]: Next dose
+                  - paragraph [ref=e138]: Apr 12, 2026, 9:00 AM
+            - article [ref=e139]:
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - paragraph [ref=e142]: Medication
+                  - heading "PhaR macy 024424 J GeST TAKE ONE IABE 8Ym HEedebe8\" A D9\" AURE 2mt \" Relills R Jeifo Oi after" [level=3] [ref=e143]
+                  - paragraph [ref=e144]: Dosage pending
+                  - paragraph [ref=e145]: TAKE ONE IABE 8Ym HEedebe8" A D9" AURE 2mt " Relills R Jeifo Oi after
+                - generic [ref=e146]:
+                  - paragraph [ref=e147]: Next dose
+                  - paragraph [ref=e148]: Apr 12, 2026, 9:00 AM
+            - article [ref=e149]:
+              - generic [ref=e150]:
+                - generic [ref=e151]:
+                  - paragraph [ref=e152]: Medication
+                  - 'heading "PhaRmacy 424421 R GESt TABE ONE 8Y me: Fareet ( SMES A D'' as NEEDED ZiiI I JiE7# 0lle ReTin E40 62is e" [level=3] [ref=e153]'
+                  - paragraph [ref=e154]: Dosage pending
+                  - paragraph [ref=e155]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e156]:
+                  - paragraph [ref=e157]: Next dose
+                  - paragraph [ref=e158]: Apr 12, 2026, 9:00 AM
+            - article [ref=e159]:
+              - generic [ref=e160]:
+                - generic [ref=e161]:
+                  - paragraph [ref=e162]: Medication
+                  - heading "PhaR macy 424424 LROON QuEST TAKE ONE BY NoUR ETTi Thre MES\" A\" 04' A5 NEEDED LrzIke HCL 40Y6 LJiL Halle RCmit Mat 0 Te 0200" [level=3] [ref=e163]
+                  - paragraph [ref=e164]: Dosage pending
+                  - paragraph [ref=e165]: TAKE ONE BY NoUR ETTi Thre MES" A" 04' A5 NEEDED LrzIke HCL 40Y6 LJiL Halle RCmit Mat 0 Te 0200
+                - generic [ref=e166]:
+                  - paragraph [ref=e167]: Next dose
+                  - paragraph [ref=e168]: Apr 12, 2026, 9:00 AM
+            - article [ref=e169]:
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - paragraph [ref=e172]: Medication
+                  - 'heading "PhaR macy 424421 K QEST TAEE oNE BY Nons THRE ETf MES A Da A5 NEEDED Zmkj # LLE 411 Rie= Icinc Fiee 02/6" [level=3] [ref=e173]'
+                  - paragraph [ref=e174]: Dosage pending
+                  - paragraph [ref=e175]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e176]:
+                  - paragraph [ref=e177]: Next dose
+                  - paragraph [ref=e178]: Apr 12, 2026, 9:00 AM
+            - article [ref=e179]:
+              - generic [ref=e180]:
+                - generic [ref=e181]:
+                  - paragraph [ref=e182]: Medication
+                  - heading "PhaR macy 024421 3 'QUEST TaKE ONE BY Non" [level=3] [ref=e183]
+                  - paragraph [ref=e184]: Dosage pending
+                  - paragraph [ref=e185]: TaKE ONE BY Non; Hadii MES A Da As NEEDED Zmie K 40*6 ETI E Refiile Remain Le4FA 02/5
+                - generic [ref=e186]:
+                  - paragraph [ref=e187]: Next dose
+                  - paragraph [ref=e188]: Apr 12, 2026, 9:00 AM
+            - article [ref=e189]:
+              - generic [ref=e190]:
+                - generic [ref=e191]:
+                  - paragraph [ref=e192]: Medication
+                  - 'heading "PhaR macy 024421 AgEt TAEE Gnet''= MoU: THRE [ A:DA NEEDED CNZINE HOL'' VO46 T48 Le7 ^ eekalls RrCin R-D aler 02/5" [level=3] [ref=e193]'
+                  - paragraph [ref=e194]: Dosage pending
+                  - paragraph [ref=e195]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e196]:
+                  - paragraph [ref=e197]: Next dose
+                  - paragraph [ref=e198]: Apr 12, 2026, 9:00 AM
+            - article [ref=e199]:
+              - generic [ref=e200]:
+                - generic [ref=e201]:
+                  - paragraph [ref=e202]: Medication
+                  - 'heading "Phar macy 424421 Kadnn GueST TABE BY FHEoEbe#\" Noi: A Dai LZmI \"6 MRTa1 eakills RA= Rf6 aier 02/5" [level=3] [ref=e203]'
+                  - paragraph [ref=e204]: Dosage pending
+                  - paragraph [ref=e205]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e206]:
+                  - paragraph [ref=e207]: Next dose
+                  - paragraph [ref=e208]: Apr 12, 2026, 9:00 AM
+            - article [ref=e209]:
+              - generic [ref=e210]:
+                - generic [ref=e211]:
+                  - paragraph [ref=e212]: Medication
+                  - heading "Phar macy 424424 R QueST FAE EQNE Nenes a\"04' FEEDED A DaT emieuCL I0Y6 T Tati Dl Remjin LE:Rm er 02/05" [level=3] [ref=e213]
+                  - paragraph [ref=e214]: Dosage pending
+                  - paragraph [ref=e215]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e216]:
+                  - paragraph [ref=e217]: Next dose
+                  - paragraph [ref=e218]: Apr 12, 2026, 9:00 AM
+            - article [ref=e219]:
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - paragraph [ref=e222]: Medication
+                  - 'heading "PhaR macy 024424 Uun QeST TAGE E''NEnegy Nqui: A DA A5 NEEDED [Zmie kCl 10*6 T= 107i4 0 Renain Bipn tr 02/050" [level=3] [ref=e223]'
+                  - paragraph [ref=e224]: Dosage pending
+                  - paragraph [ref=e225]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e226]:
+                  - paragraph [ref=e227]: Next dose
+                  - paragraph [ref=e228]: Apr 12, 2026, 9:00 AM
+            - article [ref=e229]:
+              - generic [ref=e230]:
+                - generic [ref=e231]:
+                  - paragraph [ref=e232]: Medication
+                  - 'heading "PhaR macy 024424 AM GEST IAKE ONE BY NoUT: TABEE IMES Ada NEEDED Zmike k I0 T llt Recan Ketee 02i6" [level=3] [ref=e233]'
+                  - paragraph [ref=e234]: Dosage pending
+                  - paragraph [ref=e235]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e236]:
+                  - paragraph [ref=e237]: Next dose
+                  - paragraph [ref=e238]: Apr 12, 2026, 9:00 AM
+            - article [ref=e239]:
+              - generic [ref=e240]:
+                - generic [ref=e241]:
+                  - paragraph [ref=e242]: Medication
+                  - 'heading "macy 024428 EOEII TA(E ONE BY Noutr TTSMes dAT WREE NEEDED cozike k 18*6 TAUE t #ill Remaln 0otet 02/05421" [level=3] [ref=e243]'
+                  - paragraph [ref=e244]: Dosage pending
+                  - paragraph [ref=e245]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e246]:
+                  - paragraph [ref=e247]: Next dose
+                  - paragraph [ref=e248]: Apr 12, 2026, 9:00 AM
+            - article [ref=e249]:
+              - generic [ref=e250]:
+                - generic [ref=e251]:
+                  - paragraph [ref=e252]: Medication
+                  - heading "macy 74424 'NEST 0z/86 RE_QNE BY ET ( FiMes MoATh Seded TzUIE HOL 40Y6 TAbE 46714 D Rem+in 3atps 0zic51" [level=3] [ref=e253]
+                  - paragraph [ref=e254]: Dosage pending
+                  - paragraph [ref=e255]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e256]:
+                  - paragraph [ref=e257]: Next dose
+                  - paragraph [ref=e258]: Apr 12, 2026, 9:00 AM
+            - article [ref=e259]:
+              - generic [ref=e260]:
+                - generic [ref=e261]:
+                  - paragraph [ref=e262]: Medication
+                  - 'heading "54, #\"841\" Vidi ( Kuk KL" [level=3] [ref=e263]'
+                  - paragraph [ref=e264]: Dosage pending
+                  - paragraph [ref=e265]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e266]:
+                  - paragraph [ref=e267]: Next dose
+                  - paragraph [ref=e268]: Apr 12, 2026, 9:00 AM
+            - article [ref=e269]:
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - paragraph [ref=e272]: Medication
+                  - heading "GE \"eoe8e3 + @ \"847 741 1 Rea4." [level=3] [ref=e273]
+                  - paragraph [ref=e274]: Dosage pending
+                  - paragraph [ref=e275]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e276]:
+                  - paragraph [ref=e277]: Next dose
+                  - paragraph [ref=e278]: Apr 12, 2026, 9:00 AM
+            - article [ref=e279]:
+              - generic [ref=e280]:
+                - generic [ref=e281]:
+                  - paragraph [ref=e282]: Medication
+                  - 'heading "Mici \"HebEbe8 88\" Ziu #" [level=3] [ref=e283]'
+                  - paragraph [ref=e284]: Dosage pending
+                  - paragraph [ref=e285]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e286]:
+                  - paragraph [ref=e287]: Next dose
+                  - paragraph [ref=e288]: Apr 12, 2026, 9:00 AM
+            - article [ref=e289]:
+              - generic [ref=e290]:
+                - generic [ref=e291]:
+                  - paragraph [ref=e292]: Medication
+                  - heading "Mact Mene! a\"84" [level=3] [ref=e293]
+                  - paragraph [ref=e294]: Dosage pending
+                  - paragraph [ref=e295]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e296]:
+                  - paragraph [ref=e297]: Next dose
+                  - paragraph [ref=e298]: Apr 12, 2026, 9:00 AM
+            - article [ref=e299]:
+              - generic [ref=e300]:
+                - generic [ref=e301]:
+                  - paragraph [ref=e302]: Medication
+                  - heading "\"8ed28e80 \"o4T8 Tiea I6" [level=3] [ref=e303]
+                  - paragraph [ref=e304]: Dosage pending
+                  - paragraph [ref=e305]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e306]:
+                  - paragraph [ref=e307]: Next dose
+                  - paragraph [ref=e308]: Apr 12, 2026, 9:00 AM
+            - article [ref=e309]:
+              - generic [ref=e310]:
+                - generic [ref=e311]:
+                  - paragraph [ref=e312]: Medication
+                  - heading "# 3" [level=3] [ref=e313]
+                  - paragraph [ref=e314]: Dosage pending
+                  - paragraph [ref=e315]: Instructions will appear here once the label parser extracts them.
+                - generic [ref=e316]:
+                  - paragraph [ref=e317]: Next dose
+                  - paragraph [ref=e318]: Apr 12, 2026, 9:00 AM
+        - generic [ref=e319]:
+          - generic [ref=e320]:
+            - generic [ref=e321]:
+              - heading "Familiar Faces" [level=2] [ref=e322]
+              - paragraph [ref=e323]: Known visitors are auto-learned. Caregivers can promote unknown faces with a label.
+            - generic [ref=e324]: 2 seen
+          - generic [ref=e325]:
+            - article [ref=e326]:
+              - generic [ref=e328]: No image
+              - generic [ref=e329]:
+                - generic [ref=e330]:
+                  - generic [ref=e331]:
+                    - heading "Unknown" [level=3] [ref=e332]
+                    - paragraph [ref=e333]: Familiar visitor
+                  - generic [ref=e334]: 59 sightings
+                - generic [ref=e335]:
+                  - generic [ref=e336]: Label
+                  - generic [ref=e337]:
+                    - textbox "Label Save" [ref=e338]:
+                      - /placeholder: Name or relationship
+                    - button "Save" [ref=e339] [cursor=pointer]
+            - article [ref=e340]:
+              - generic [ref=e342]: No image
+              - generic [ref=e343]:
+                - generic [ref=e344]:
+                  - generic [ref=e345]:
+                    - heading "Unknown" [level=3] [ref=e346]
+                    - paragraph [ref=e347]: Familiar visitor
+                  - generic [ref=e348]: 8 sightings
+                - generic [ref=e349]:
+                  - generic [ref=e350]: Label
+                  - generic [ref=e351]:
+                    - textbox "Label Save" [ref=e352]:
+                      - /placeholder: Name or relationship
+                    - button "Save" [ref=e353] [cursor=pointer]
+      - generic [ref=e354]:
+        - generic [ref=e355]:
+          - generic [ref=e356]:
+            - heading "Alerts Feed" [level=2] [ref=e357]
+            - paragraph [ref=e358]: Latest reminders, unfamiliar faces, and high-priority SOS events.
+          - generic [ref=e359]: 1 recent
+        - article [ref=e361]:
+          - generic [ref=e362]:
+            - generic [ref=e363]:
+              - generic [ref=e364]:
+                - generic [ref=e365]: critical
+                - generic [ref=e366]: Apr 11, 2026, 1:06 PM
+              - generic [ref=e367]:
+                - heading "Pistol detected" [level=3] [ref=e368]
+                - paragraph [ref=e369]: "SOS: Sharp object near Vishruth. 911 should be called."
+            - button "Acknowledge" [ref=e371] [cursor=pointer]
+  - alert [ref=e25]

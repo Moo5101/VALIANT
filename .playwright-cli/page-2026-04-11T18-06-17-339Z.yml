@@ -1,0 +1,76 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e26]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - paragraph [ref=e30]: Patient Safety Console
+          - heading "Vishruth" [level=1] [ref=e31]
+          - paragraph [ref=e32]: Medicine reminders, familiar faces, and hazard alerts are tracked here for the patient and caregiver.
+        - generic [ref=e33]:
+          - generic [ref=e34]:
+            - paragraph [ref=e35]: Patient Phone
+            - paragraph [ref=e36]: "+19452172143"
+          - generic [ref=e37]:
+            - paragraph [ref=e38]: Caregiver
+            - paragraph [ref=e39]:
+              - text: Landon
+              - generic [ref=e40]: "+18322979491"
+        - button "Sign out" [ref=e41] [cursor=pointer]
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - generic [ref=e45]: SAFE
+          - heading "All Safe" [level=2] [ref=e46]
+          - paragraph [ref=e47]: No active hazards or unknown visitors have been detected recently.
+          - paragraph [ref=e48]: Live coverage for Vishruth
+        - img "Live camera preview" [ref=e50]
+      - generic [ref=e51]:
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - heading "Medicine Schedule" [level=2] [ref=e55]
+              - paragraph [ref=e56]: OCR-detected bottles and their next reminder windows.
+            - generic [ref=e57]: 0 tracked
+          - generic [ref=e59]: No medicine bottles have been saved yet. Hold a bottle in view of the camera to trigger OCR and scheduling.
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - heading "Familiar Faces" [level=2] [ref=e63]
+              - paragraph [ref=e64]: Known visitors are auto-learned. Caregivers can promote unknown faces with a label.
+            - generic [ref=e65]: 2 seen
+          - generic [ref=e66]:
+            - article [ref=e67]:
+              - generic [ref=e69]: No image
+              - generic [ref=e70]:
+                - generic [ref=e71]:
+                  - generic [ref=e72]:
+                    - heading "Unknown" [level=3] [ref=e73]
+                    - paragraph [ref=e74]: Needs caregiver review
+                  - generic [ref=e75]: 1 sightings
+                - generic [ref=e76]:
+                  - generic [ref=e77]: Label
+                  - generic [ref=e78]:
+                    - textbox "Label Save" [ref=e79]:
+                      - /placeholder: Name or relationship
+                    - button "Save" [ref=e80] [cursor=pointer]
+            - article [ref=e81]:
+              - generic [ref=e83]: No image
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - generic [ref=e86]:
+                    - heading "Unknown" [level=3] [ref=e87]
+                    - paragraph [ref=e88]: Needs caregiver review
+                  - generic [ref=e89]: 1 sightings
+                - generic [ref=e90]:
+                  - generic [ref=e91]: Label
+                  - generic [ref=e92]:
+                    - textbox "Label Save" [ref=e93]:
+                      - /placeholder: Name or relationship
+                    - button "Save" [ref=e94] [cursor=pointer]
+      - generic [ref=e95]:
+        - generic [ref=e96]:
+          - generic [ref=e97]:
+            - heading "Alerts Feed" [level=2] [ref=e98]
+            - paragraph [ref=e99]: Latest reminders, unfamiliar faces, and high-priority SOS events.
+          - generic [ref=e100]: 0 recent
+        - generic [ref=e102]: No alerts yet. The system will list new reminders and incidents here as they happen.
+  - alert [ref=e25]

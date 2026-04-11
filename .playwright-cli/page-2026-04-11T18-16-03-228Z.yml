@@ -1,0 +1,6 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: Loading
+      - heading "Checking for an existing patient session." [level=1] [ref=e5]
+  - alert [ref=e6]

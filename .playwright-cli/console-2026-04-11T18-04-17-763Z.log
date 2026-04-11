@@ -1,0 +1,13 @@
+[    1546ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[   17538ms] [ERROR] Access to fetch at 'http://127.0.0.1:8000/api/session/start' from origin 'http://127.0.0.1:3002' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ http://127.0.0.1:3002/:0
+[   17538ms] [ERROR] Failed to load resource: net::ERR_FAILED @ http://127.0.0.1:8000/api/session/start:0
+[   96550ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[  212183ms] [ERROR] Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING @ http://127.0.0.1:8000/api/camera/stream:0
+[  237263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/patient/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  237263ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/medicines/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  237264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/faces/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  237264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/alerts/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  267264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/patient/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  267264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/medicines/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  267264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/faces/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0
+[  267264ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8000/api/alerts/d6beebd0-c3b7-41b5-8be9-09a1323d22ad:0

@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e110]:
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - paragraph [ref=e114]: Patient Safety Console
+          - heading "Test Patient" [level=1] [ref=e115]
+          - paragraph [ref=e116]: Medicine reminders, familiar faces, and hazard alerts are tracked here for the patient and caregiver.
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - paragraph [ref=e119]: Patient Phone
+            - paragraph [ref=e120]: "+12145550123"
+          - generic [ref=e121]:
+            - paragraph [ref=e122]: Caregiver
+            - paragraph [ref=e123]:
+              - text: Test Caregiver
+              - generic [ref=e124]: "+12145550124"
+        - button "Sign out" [ref=e125] [cursor=pointer]
+      - generic [ref=e127]:
+        - generic [ref=e128]:
+          - generic [ref=e129]: SAFE
+          - heading "All Safe" [level=2] [ref=e130]
+          - paragraph [ref=e131]: No active hazards or unknown visitors have been detected recently.
+          - paragraph [ref=e132]: Live coverage for Test Patient
+        - img "Live camera preview" [ref=e134]
+      - generic [ref=e135]:
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e138]:
+              - heading "Medicine Schedule" [level=2] [ref=e139]
+              - paragraph [ref=e140]: OCR-detected bottles and their next reminder windows.
+            - generic [ref=e141]: 0 tracked
+          - generic [ref=e143]: No medicine bottles have been saved yet. Hold a bottle in view of the camera to trigger OCR and scheduling.
+        - generic [ref=e144]:
+          - generic [ref=e145]:
+            - generic [ref=e146]:
+              - heading "Familiar Faces" [level=2] [ref=e147]
+              - paragraph [ref=e148]: Known visitors are auto-learned. Caregivers can promote unknown faces with a label.
+            - generic [ref=e149]: 0 seen
+          - generic [ref=e151]: No faces have been captured yet. Once faces are seen, they will appear here for labeling and familiarity tracking.
+      - generic [ref=e152]:
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - heading "Alerts Feed" [level=2] [ref=e155]
+            - paragraph [ref=e156]: Latest reminders, unfamiliar faces, and high-priority SOS events.
+          - generic [ref=e157]: 0 recent
+        - generic [ref=e159]: No alerts yet. The system will list new reminders and incidents here as they happen.
+  - alert [ref=e25]

@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #f6f2e8;
+  --ink: #12263a;
+  --muted: #52606d;
+  --card: rgba(255, 252, 245, 0.84);
+  --card-border: rgba(18, 38, 58, 0.12);
+  --good: #2f7a67;
+  --warn: #b7791f;
+  --danger: #b63a3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 20px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(109, 182, 169, 0.24), transparent 26%),
+    radial-gradient(circle at bottom left, rgba(242, 180, 80, 0.26), transparent 24%),
+    linear-gradient(180deg, #faf6ee 0%, var(--canvas) 100%);
+  color: var(--ink);
+  font-family: "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.panel-shell {
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+}
+
+.section-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.section-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}

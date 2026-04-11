@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - paragraph [ref=e7]: Patient Safety Console
+          - heading "John Carter" [level=1] [ref=e8]
+          - paragraph [ref=e9]: Medicine reminders, familiar faces, and hazard alerts are tracked here for the patient and caregiver.
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - paragraph [ref=e12]: Patient Phone
+            - paragraph [ref=e13]: "+15555550123"
+          - generic [ref=e14]:
+            - paragraph [ref=e15]: Caregiver
+            - paragraph [ref=e16]:
+              - text: Emily Carter
+              - generic [ref=e17]: "+15555550124"
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: SOS
+          - heading "Danger - SOS Sent" [level=2] [ref=e22]
+          - paragraph [ref=e23]: "SOS: Weapon detected near John Carter. 911 should be called."
+          - paragraph [ref=e24]: Live coverage for John Carter
+        - img "Live camera preview" [ref=e26]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - heading "Medicine Schedule" [level=2] [ref=e31]
+              - paragraph [ref=e32]: OCR-detected bottles and their next reminder windows.
+            - generic [ref=e33]: 2 tracked
+          - generic [ref=e34]:
+            - article [ref=e35]:
+              - generic [ref=e36]:
+                - generic [ref=e37]:
+                  - paragraph [ref=e38]: Medication
+                  - heading "Donepezil" [level=3] [ref=e39]
+                  - paragraph [ref=e40]: 5mg | twice daily
+                  - paragraph [ref=e41]: Take 1 tablet in the morning and 1 tablet at bedtime.
+                - generic [ref=e42]:
+                  - paragraph [ref=e43]: Next dose
+                  - paragraph [ref=e44]: Apr 11, 2026, 9:00 PM
+            - article [ref=e45]:
+              - generic [ref=e46]:
+                - generic [ref=e47]:
+                  - paragraph [ref=e48]: Medication
+                  - heading "Lisinopril" [level=3] [ref=e49]
+                  - paragraph [ref=e50]: 10mg | once daily
+                  - paragraph [ref=e51]: Take 1 tablet each morning with water.
+                - generic [ref=e52]:
+                  - paragraph [ref=e53]: Next dose
+                  - paragraph [ref=e54]: Apr 12, 2026, 9:00 AM
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - heading "Familiar Faces" [level=2] [ref=e58]
+              - paragraph [ref=e59]: Known visitors are auto-learned. Caregivers can promote unknown faces with a label.
+            - generic [ref=e60]: 2 seen
+          - generic [ref=e61]:
+            - article [ref=e62]:
+              - generic [ref=e64]: No image
+              - generic [ref=e65]:
+                - generic [ref=e66]:
+                  - generic [ref=e67]:
+                    - heading "Unknown" [level=3] [ref=e68]
+                    - paragraph [ref=e69]: Needs caregiver review
+                  - generic [ref=e70]: 1 sightings
+                - generic [ref=e71]:
+                  - generic [ref=e72]: Label
+                  - generic [ref=e73]:
+                    - textbox "Label Save" [ref=e74]:
+                      - /placeholder: Name or relationship
+                    - button "Save" [ref=e75] [cursor=pointer]
+            - article [ref=e76]:
+              - generic [ref=e78]: No image
+              - generic [ref=e79]:
+                - generic [ref=e80]:
+                  - generic [ref=e81]:
+                    - heading "Emily - Daughter" [level=3] [ref=e82]
+                    - paragraph [ref=e83]: Familiar visitor
+                  - generic [ref=e84]: 7 sightings
+                - generic [ref=e85]:
+                  - generic [ref=e86]: Label
+                  - generic [ref=e87]:
+                    - textbox "Label Save" [ref=e88]:
+                      - /placeholder: Name or relationship
+                      - text: Emily - Daughter
+                    - button "Save" [ref=e89] [cursor=pointer]
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]:
+            - heading "Alerts Feed" [level=2] [ref=e93]
+            - paragraph [ref=e94]: Latest reminders, unfamiliar faces, and high-priority SOS events.
+          - generic [ref=e95]: 3 recent
+        - generic [ref=e96]:
+          - article [ref=e97]:
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - generic [ref=e101]: critical
+                  - generic [ref=e102]: Apr 11, 2026, 12:15 PM
+                - generic [ref=e103]:
+                  - heading "Weapon detected" [level=3] [ref=e104]
+                  - paragraph [ref=e105]: "SOS: Weapon detected near John Carter. 911 should be called."
+              - button "Acknowledge" [ref=e107] [cursor=pointer]
+          - article [ref=e108]:
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - generic [ref=e112]: warning
+                  - generic [ref=e113]: Apr 11, 2026, 12:07 PM
+                - generic [ref=e114]:
+                  - heading "Unknown person detected nearby" [level=3] [ref=e115]
+                  - paragraph [ref=e116]: Unknown person detected near John Carter.
+              - button "Acknowledge" [ref=e118] [cursor=pointer]
+          - article [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]:
+                - generic [ref=e122]:
+                  - generic [ref=e123]: info
+                  - generic [ref=e124]: Apr 11, 2026, 11:57 AM
+                  - generic [ref=e125]: Acknowledged
+                - generic [ref=e126]:
+                  - heading "Medicine reminder sent" [level=3] [ref=e127]
+                  - paragraph [ref=e128]: "Reminder: John should take Lisinopril 10mg."
+              - button "Acknowledged" [disabled] [ref=e130]
+  - alert [ref=e131]
