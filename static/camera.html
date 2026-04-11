@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen"/>
+<title>Camera</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    background: #000;
+    color: #fff;
+    font-family: -apple-system, sans-serif;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #setup-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .cam-icon { font-size: 56px; margin-bottom: 4px; }
+
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; text-align: center; }
+
+  p.sub { font-size: 14px; color: rgba(255,255,255,0.5); text-align: center; line-height: 1.5; }
+
+  input[type=text] {
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  input[type=text]::placeholder { color: rgba(255,255,255,0.35); }
+
+  .start-btn {
+    width: 100%;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+  .start-btn:active { opacity: 0.8; }
+
+  #camera-screen {
+    display: none;
+    width: 100%;
+    height: 100dvh;
+    position: relative;
+    background: #000;
+  }
+
+  video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .hud { position: absolute; inset: 0; pointer-events: none; }
+
+  .hud-top {
+    position: absolute; top: 0; left: 0; right: 0;
+    padding: 20px 20px 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+
+  .hud-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 0 20px 32px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+
+  .pill {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .dot-live {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #ff3b30;
+    animation: blink 1s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .dot-motion { width: 7px; height: 7px; border-radius: 50%; background: #ffd60a; }
+
+  #motion-pill { background: rgba(255,59,48,0.7); display: none; }
+  #motion-pill.active { display: flex; }
+
+  .flip-btn {
+    position: absolute; bottom: 32px; right: 24px;
+    width: 48px; height: 48px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: none; border-radius: 50%;
+    color: #fff; font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: all;
+  }
+
+  canvas { display: none; }
+
+  #error-msg {
+    position: absolute; inset: 0;
+    display: none; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; padding: 24px; text-align: center; background: #000;
+  }
+  #error-msg.show { display: flex; }
+  #error-msg h2 { font-size: 18px; }
+  #error-msg p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  #error-msg button {
+    background: #fff; color: #000; border: none; border-radius: 10px;
+    padding: 12px 24px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div id="setup-screen">
+  <div class="cam-icon">📷</div>
+  <h1>Connect Your Camera</h1>
+  <p class="sub">Give this phone a name so you can identify it on the dashboard.</p>
+  <input type="text" id="cam-name-input" placeholder="e.g. Front Door, Kitchen..." maxlength="30" />
+  <button class="start-btn" onclick="startCamera()">Start Streaming</button>
+</div>
+
+<div id="camera-screen">
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas"></canvas>
+
+  <div class="hud">
+    <div class="hud-top">
+      <div class="pill"><div class="dot-live"></div>LIVE</div>
+      <div class="pill" id="status-pill">Connecting…</div>
+    </div>
+    <div class="hud-bottom">
+      <div class="pill" id="cam-name-display">—</div>
+      <div class="pill" id="motion-pill">
+        <div class="dot-motion"></div>MOTION
+      </div>
+    </div>
+  </div>
+
+  <button class="flip-btn" onclick="flipCamera()">🔄</button>
+
+  <div id="error-msg">
+    <h2>Camera Access Needed</h2>
+    <p>Please allow camera access when prompted, then try again.</p>
+    <button onclick="location.reload()">Try Again</button>
+  </div>
+</div>
+
+<script>
+  let stream = null;
+  let facingMode = "environment";
+  let camName = "Camera";
+  let camId = null;
+  let streaming = false;
+  let prevFrameData = null;
+  let motionActive = false;
+  const MOTION_THRESHOLD = 25;
+  const MOTION_PIXEL_RATIO = 0.015;
+
+  async function startCamera() {
+    camName = document.getElementById('cam-name-input').value.trim() || 'Camera';
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('camera-screen').style.display = 'block';
+    document.getElementById('cam-name-display').textContent = camName;
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: false
+      });
+      document.getElementById('video').srcObject = stream;
+      await register();
+      streaming = true;
+      sendFrames();
+    } catch(e) {
+      document.getElementById('error-msg').classList.add('show');
+      console.log('Camera error:', e);
+    }
+  }
+
+  async function register() {
+    try {
+      const resp = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: camName })
+      });
+      const data = await resp.json();
+      camId = data.id;
+      setStatus('Connected ✓');
+      console.log('Registered as', camId);
+    } catch(e) {
+      setStatus('Error');
+      console.log('Register error:', e);
+    }
+  }
+
+  async function sendFrames() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    while (streaming) {
+      await new Promise(r => setTimeout(r, 150)); // ~6fps
+
+      if (!video.videoWidth || !camId) continue;
+
+      canvas.width = 320;
+      canvas.height = Math.round(video.videoHeight / video.videoWidth * 320);
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Motion detection
+      const motion = detectMotion(ctx, canvas.width, canvas.height);
+      if (motion !== motionActive) {
+        motionActive = motion;
+        document.getElementById('motion-pill').classList.toggle('active', motion);
+        sendMotion(motion);
+      }
+
+      // Send frame
+      canvas.toBlob(async (blob) => {
+        if (!blob || !camId) return;
+        const formData = new FormData();
+        formData.append('frame', blob, 'frame.jpg');
+        formData.append('camera_id', camId);
+        try {
+          await fetch('/api/frame', { method: 'POST', body: formData });
+        } catch(e) {
+          setStatus('Reconnecting…');
+          await new Promise(r => setTimeout(r, 1000));
+          await register();
+        }
+      }, 'image/jpeg', 0.6);
+    }
+  }
+
+  async function sendMotion(detected) {
+    if (!camId) return;
+    try {
+      await fetch('/api/motion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ camera_id: camId, detected })
+      });
+    } catch(e) { console.log('Motion send error:', e); }
+  }
+
+  function detectMotion(ctx, w, h) {
+    const imageData = ctx.getImageData(0, 0, w, h);
+    const pixels = imageData.data;
+    if (!prevFrameData) { prevFrameData = new Uint8ClampedArray(pixels); return false; }
+    let changed = 0;
+    for (let i = 0; i < pixels.length; i += 4) {
+      const d = (Math.abs(pixels[i]-prevFrameData[i]) + Math.abs(pixels[i+1]-prevFrameData[i+1]) + Math.abs(pixels[i+2]-prevFrameData[i+2])) / 3;
+      if (d > MOTION_THRESHOLD) changed++;
+    }
+    prevFrameData = new Uint8ClampedArray(pixels);
+    return (changed / (w * h)) > MOTION_PIXEL_RATIO;
+  }
+
+  async function flipCamera() {
+    facingMode = facingMode === "environment" ? "user" : "environment";
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode, width: { ideal: 640 }, height: { ideal: 480 } },
+      audio: false
+    });
+    document.getElementById('video').srcObject = stream;
+  }
+
+  function setStatus(text) {
+    document.getElementById('status-pill').textContent = text;
+  }
+</script>
+</body>
+</html>

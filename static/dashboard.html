@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SurveillanceNet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+  :root {
+    --bg: #080a0d;
+    --s1: #0e1117;
+    --s2: #141820;
+    --border: #1a2030;
+    --accent: #3b82f6;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --text: #cbd5e1;
+    --dim: #3d4f6b;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; }
+
+  /* Subtle grid bg */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events:none;
+  }
+
+  /* ── Header ── */
+  header {
+    position:sticky; top:0; z-index:50;
+    background: rgba(8,10,13,0.9);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:0 28px;
+    height:60px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+
+  .logo {
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo-mark {
+    width:32px; height:32px;
+    background:var(--accent);
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .logo-mark::after {
+    content:'';
+    position:absolute;
+    top:-2px; right:-2px;
+    width:8px; height:8px;
+    background:var(--red);
+    border-radius:50%;
+    border:2px solid var(--bg);
+    animation:pulse-dot 1.5s infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.3); opacity:0.7; }
+  }
+
+  .logo-text {
+    font-family:var(--mono);
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:0.05em;
+    color:#fff;
+  }
+  .logo-sub { font-size:10px; color:var(--dim); letter-spacing:0.1em; margin-top:1px; }
+
+  .header-right { display:flex; align-items:center; gap:20px; }
+
+  .stat-group { display:flex; gap:20px; }
+  .hstat { text-align:center; }
+  .hstat-val { font-family:var(--mono); font-size:18px; line-height:1; }
+  .hstat-label { font-size:10px; color:var(--dim); letter-spacing:0.08em; margin-top:2px; }
+
+  .ws-indicator {
+    display:flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:10px; color:var(--dim);
+    letter-spacing:0.05em;
+  }
+  .ws-dot {
+    width:6px; height:6px; border-radius:50%;
+    background:var(--yellow);
+    transition:background 0.3s;
+  }
+  .ws-dot.ok { background:var(--green); }
+  .ws-dot.err { background:var(--red); }
+
+  /* ── Main ── */
+  main { padding:24px 28px 60px; }
+
+  /* ── Empty state ── */
+  #empty {
+    display:flex; flex-direction:column; align-items:center;
+    padding:100px 20px; text-align:center; gap:16px;
+  }
+  .empty-icon {
+    font-size:52px; opacity:0.15;
+  }
+  #empty h2 { font-family:var(--mono); font-size:13px; letter-spacing:0.15em; color:var(--dim); }
+  #empty p { font-size:13px; color:var(--dim); max-width:340px; line-height:1.6; }
+  .url-chip {
+    background:var(--s2); border:1px solid var(--border);
+    border-radius:8px; padding:10px 16px;
+    font-family:var(--mono); font-size:13px; color:var(--accent);
+    letter-spacing:0.05em;
+  }
+
+  /* ── Camera Grid ── */
+  #grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(360px, 1fr));
+    gap:18px;
+  }
+
+  /* ── Camera Card ── */
+  .card {
+    background:var(--s1);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+    transition:border-color 0.25s, box-shadow 0.25s;
+  }
+  .card.motion-active {
+    border-color:var(--red);
+    box-shadow:0 0 0 1px rgba(239,68,68,0.3), 0 8px 32px rgba(239,68,68,0.15);
+  }
+
+  .card-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 14px;
+    border-bottom:1px solid var(--border);
+    background:var(--s2);
+    gap:8px;
+  }
+
+  .card-name {
+    font-family:var(--mono); font-size:12px;
+    font-weight:500; color:#fff;
+    letter-spacing:0.05em;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    flex:1;
+  }
+
+  .badges { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+
+  .badge {
+    font-family:var(--mono); font-size:9px;
+    padding:3px 8px; border-radius:4px;
+    letter-spacing:0.08em; font-weight:500;
+    text-transform:uppercase;
+  }
+  .b-online  { background:rgba(34,197,94,0.12);  color:var(--green); border:1px solid rgba(34,197,94,0.25); }
+  .b-offline { background:rgba(239,68,68,0.12);  color:var(--red);   border:1px solid rgba(239,68,68,0.25); }
+  .b-connecting { background:rgba(234,179,8,0.12); color:var(--yellow); border:1px solid rgba(234,179,8,0.25); }
+  .b-motion  { background:rgba(239,68,68,0.2);   color:var(--red);   border:1px solid var(--red); animation:blink 0.7s infinite; display:none; }
+  .b-motion.show { display:inline; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Feed */
+  .card-feed {
+    position:relative;
+    background:#000;
+    aspect-ratio:16/9;
+    overflow:hidden;
+  }
+
+  .card-feed img {
+    width:100%; height:100%;
+    object-fit:cover; display:block;
+  }
+
+  .no-signal {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:8px; color:var(--dim);
+  }
+  .no-signal span { font-size:28px; opacity:0.3; }
+  .no-signal p { font-family:var(--mono); font-size:11px; letter-spacing:0.15em; }
+
+  /* Feed overlays */
+  .feed-tl, .feed-tr, .feed-bl, .feed-br {
+    position:absolute;
+    font-family:var(--mono); font-size:10px;
+    color:rgba(255,255,255,0.5);
+    letter-spacing:0.08em;
+    pointer-events:none;
+    text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  }
+  .feed-tl { top:10px; left:12px; display:flex; align-items:center; gap:5px; }
+  .feed-tr { top:10px; right:12px; }
+  .feed-bl { bottom:10px; left:12px; }
+  .live-dot { width:6px; height:6px; border-radius:50%; background:var(--red); animation:blink 1s infinite; }
+
+  /* Footer */
+  .card-footer {
+    padding:8px 14px;
+    border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:11px; color:var(--dim);
+  }
+  .motion-stat { font-family:var(--mono); }
+  .motion-stat em { color:var(--red); font-style:normal; }
+
+  /* ── Alert toasts ── */
+  #toasts {
+    position:fixed; top:72px; right:20px;
+    z-index:200; display:flex; flex-direction:column; gap:8px;
+    pointer-events:none;
+  }
+  .toast {
+    background:var(--s1);
+    border:1px solid var(--red);
+    border-left:3px solid var(--red);
+    border-radius:8px;
+    padding:10px 14px;
+    font-family:var(--mono); font-size:11px;
+    color:var(--text);
+    box-shadow:0 4px 24px rgba(239,68,68,0.25);
+    animation:toast-in 0.3s ease;
+    max-width:260px;
+    letter-spacing:0.03em;
+  }
+  @keyframes toast-in { from{transform:translateX(110%);opacity:0} to{transform:none;opacity:1} }
+  .toast strong { color:var(--red); display:block; margin-bottom:2px; font-size:10px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">📷</div>
+    <div>
+      <div class="logo-text">SurveillanceNet</div>
+      <div class="logo-sub">MULTI-CAMERA DASHBOARD</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="stat-group">
+      <div class="hstat">
+        <div class="hstat-val" id="s-total" style="color:#fff">0</div>
+        <div class="hstat-label">CAMERAS</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="s-online" style="color:var(--green)">0</div>
+        <div class="hstat-label">ONLINE</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="s-motion" style="color:var(--red)">0</div>
+        <div class="hstat-label">MOTION</div>
+      </div>
+    </div>
+    <div class="ws-indicator">
+      <div class="ws-dot" id="ws-dot"></div>
+      <span id="ws-label">Connecting</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="empty">
+    <div class="empty-icon">📷</div>
+    <h2>No Cameras Connected</h2>
+    <p>Open the link below on any iPhone or Android — no app needed. It works right in Safari or Chrome.</p>
+    <div class="url-chip" id="phone-url">Loading...</div>
+    <p style="font-size:12px; color:var(--dim)">All devices must be on the same WiFi network.</p>
+  </div>
+  <div id="grid" style="display:none"></div>
+</main>
+
+<div id="toasts"></div>
+
+<script>
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  let ws;
+  const motionCounts = {};
+
+  // Show the phone URL
+  document.getElementById('phone-url').textContent =
+    `${location.protocol}//${location.hostname}:${location.port}/camera`;
+
+  function connect() {
+    const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+    ws = new WebSocket(`${proto}://${location.host}/ws/dashboard`);
+
+    ws.onopen = () => setWS('ok', 'Connected');
+    ws.onclose = () => { setWS('err', 'Disconnected'); setTimeout(connect, 2000); };
+    ws.onerror = () => setWS('err', 'Error');
+
+    ws.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+      if (msg.type === 'camera_list') syncCameraList(msg.cameras);
+      else if (msg.type === 'frame') updateFrame(msg);
+      else if (msg.type === 'motion') handleMotion(msg);
+      else if (msg.type === 'motion_clear') handleMotionClear(msg);
+    };
+  }
+
+  function setWS(state, label) {
+    document.getElementById('ws-dot').className = `ws-dot ${state}`;
+    document.getElementById('ws-label').textContent = label;
+  }
+
+  function syncCameraList(cameras) {
+    // Remove cards not in list
+    document.querySelectorAll('.card').forEach(card => {
+      if (!cameras.find(c => c.id === card.dataset.id)) card.remove();
+    });
+
+    cameras.forEach(cam => {
+      let card = document.querySelector(`.card[data-id="${cam.id}"]`);
+      if (!card) card = createCard(cam);
+      updateCardStatus(card, cam);
+    });
+
+    const hasCams = cameras.length > 0;
+    empty.style.display = hasCams ? 'none' : 'flex';
+    grid.style.display = hasCams ? 'grid' : 'none';
+    updateStats();
+  }
+
+  function createCard(cam) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.id = cam.id;
+    card.innerHTML = `
+      <div class="card-header">
+        <span class="card-name">${cam.name}</span>
+        <div class="badges">
+          <span class="badge b-motion" id="mb-${cam.id}">MOTION</span>
+          <span class="badge b-connecting" id="sb-${cam.id}">connecting</span>
+        </div>
+      </div>
+      <div class="card-feed">
+        <img id="img-${cam.id}" style="display:none" />
+        <div class="no-signal" id="ns-${cam.id}">
+          <span>📵</span>
+          <p>NO SIGNAL</p>
+        </div>
+        <div class="feed-tl"><div class="live-dot"></div>LIVE</div>
+        <div class="feed-tr" id="ts-${cam.id}">--:--:--</div>
+        <div class="feed-bl">${cam.name.toUpperCase()}</div>
+      </div>
+      <div class="card-footer">
+        <div class="motion-stat">MOTION EVENTS: <em id="mc-${cam.id}">${cam.motion_count || 0}</em></div>
+        <div id="lastseen-${cam.id}" style="font-family:var(--mono);font-size:10px"></div>
+      </div>
+    `;
+    grid.appendChild(card);
+    motionCounts[cam.id] = cam.motion_count || 0;
+    return card;
+  }
+
+  function updateCardStatus(card, cam) {
+    const sb = document.getElementById(`sb-${cam.id}`);
+    if (sb) {
+      sb.className = `badge b-${cam.status}`;
+      sb.textContent = cam.status;
+    }
+    if (cam.status === 'offline') {
+      const img = document.getElementById(`img-${cam.id}`);
+      const ns = document.getElementById(`ns-${cam.id}`);
+      if (img) img.style.display = 'none';
+      if (ns) ns.style.display = 'flex';
+      card.classList.remove('motion-active');
+    }
+  }
+
+  function updateFrame(msg) {
+    const img = document.getElementById(`img-${msg.camera_id}`);
+    const ns = document.getElementById(`ns-${msg.camera_id}`);
+    const ts = document.getElementById(`ts-${msg.camera_id}`);
+    const sb = document.getElementById(`sb-${msg.camera_id}`);
+    if (!img) return;
+    img.src = `data:image/jpeg;base64,${msg.data}`;
+    img.style.display = 'block';
+    if (ns) ns.style.display = 'none';
+    if (ts) ts.textContent = new Date(msg.timestamp * 1000).toLocaleTimeString();
+    if (sb) { sb.className = 'badge b-online'; sb.textContent = 'online'; }
+  }
+
+  function handleMotion(msg) {
+    const card = document.querySelector(`.card[data-id="${msg.camera_id}"]`);
+    if (!card) return;
+    card.classList.add('motion-active');
+    const mb = document.getElementById(`mb-${msg.camera_id}`);
+    if (mb) mb.classList.add('show');
+    const mc = document.getElementById(`mc-${msg.camera_id}`);
+    if (mc) mc.textContent = msg.motion_count;
+    showToast(msg.name);
+    updateStats();
+  }
+
+  function handleMotionClear(msg) {
+    const card = document.querySelector(`.card[data-id="${msg.camera_id}"]`);
+    if (!card) return;
+    card.classList.remove('motion-active');
+    const mb = document.getElementById(`mb-${msg.camera_id}`);
+    if (mb) mb.classList.remove('show');
+    updateStats();
+  }
+
+  function showToast(name) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<strong>⚠ MOTION DETECTED</strong>${name} · ${new Date().toLocaleTimeString()}`;
+    document.getElementById('toasts').appendChild(t);
+    setTimeout(() => t.remove(), 4500);
+  }
+
+  function updateStats() {
+    const cards = document.querySelectorAll('.card');
+    const online = document.querySelectorAll('.badge.b-online').length;
+    const motion = document.querySelectorAll('.card.motion-active').length;
+    document.getElementById('s-total').textContent = cards.length;
+    document.getElementById('s-online').textContent = online;
+    document.getElementById('s-motion').textContent = motion;
+  }
+
+  connect();
+</script>
+</body>
+</html>
